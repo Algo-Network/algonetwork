@@ -27,16 +27,27 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+TAILWIND_APP_NAME = 'theme'
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+NPM_BIN_PATH = "C:\\Program Files\\nodejs\\npm.cmd"
+
 
 # Application definition
 
 INSTALLED_APPS = [
+    "django_browser_reload",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tailwind',
+    'theme',
     'authentication',
     'dashboard'
 ]
@@ -45,6 +56,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -142,3 +154,21 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+import firebase_admin
+from firebase_admin import credentials
+
+cred = credentials.Certificate('serviceAccountKey.json')
+firebase_admin.initialize_app(cred)
+
+
+FIREBASE_CONFIG = {
+    "apiKey": "AIzaSyCy3jcPcpSP836GBWlHVzTyb-ZInRr0o70",
+    "authDomain": "algonetwork.firebaseapp.com",
+    "databaseURL": "",
+    "projectId": "algonetwork",
+    "storageBucket": "algonetwork.appspot.com",
+    "messagingSenderId": "604392656198",
+    "appId": "1:604392656198:web:86deb1a323e4e57c696947",
+    "measurementId": "G-SNRJHB8ENL"
+}

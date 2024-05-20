@@ -1,4 +1,38 @@
+
+
 # Django Project
+
+## Langkah untuk Menjalankan di Lokal
+
+### 1. Membuat Database Gambar di Lokal (PostgreSQL)
+
+Jalankan perintah berikut untuk memulai layanan Docker yang akan membuat dan mengkonfigurasi database PostgreSQL:
+
+```sh
+docker-compose up
+```
+
+### 2. Menjalankan Tailwind CSS
+
+Jalankan perintah berikut untuk memulai proses pengembangan Tailwind CSS:
+
+```sh
+python manage.py tailwind start
+```
+
+### 3. Menjalankan Server Web Django
+
+Jalankan perintah berikut untuk memulai server pengembangan Django:
+
+```sh
+python manage.py runserver
+```
+
+---
+
+## Standar Commit
+
+Dengan format di atas, instruksi akan lebih mudah dipahami dan diikuti, serta standar commit akan membantu menjaga konsistensi dan kualitas riwayat commit dalam proyek ini.
 
 ## Commit Standard
 
