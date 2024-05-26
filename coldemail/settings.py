@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'theme',
     'authentication',
     'dashboard',
-    'email_data'
+    'email_data',
+    'generator_message'
 ]
 
 MIDDLEWARE = [

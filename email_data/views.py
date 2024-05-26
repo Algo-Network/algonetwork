@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import EmailData
 from .forms import EmailDataForm
+from django.http import JsonResponse
+from .models import EmailData
 
 def email_list(request):
     emails = EmailData.objects.all()
@@ -37,3 +38,13 @@ def email_delete(request, email):
         email_data.delete()
         return redirect('email_data:email_list')
     return render(request, 'email_confirm_delete.html', {'email_data': email_data})
+
+
+
+def get_all_emails(request):
+    emails = EmailData.objects.all().values('nama', 'email', 'created_at', 'updated_at', 'group')
+    return JsonResponse(list(emails), safe=False)
+
+def get_emails_by_department(request, department):
+    emails = EmailData.objects.filter(group=department).values('nama', 'email', 'created_at', 'updated_at', 'group')
+    return JsonResponse(list(emails), safe=False)

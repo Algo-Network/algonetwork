@@ -8,15 +8,34 @@
 <body>
     <h1>Email List</h1>
     <a href="{% url 'email_data:email_create' %}">Create New Email</a>
-    <ul>
-        {% for email in emails %}
-        <li>
-            <a href="{% url 'email_data:email_detail' email.email %}">{{ email.nama }}</a>
-            (<a href="{% url 'email_data:email_update' email.email %}">Edit</a>)
-            (<a href="{% url 'email_data:email_delete' email.email %}">Delete</a>)
-        </li>
-        {% endfor %}
-    </ul>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Group</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for email in emails %}
+            <tr>
+                <td><a href="{% url 'email_data:email_detail' email.email %}">{{ email.nama }}</a></td>
+                <td>{{ email.email }}</td>
+                <td>{{ email.group }}</td>
+                <td>{{ email.created_at }}</td>
+                <td>{{ email.updated_at }}</td>
+                <td>
+                    <a href="{% url 'email_data:email_update' email.email %}">Edit</a>
+                    |
+                    <a href="{% url 'email_data:email_delete' email.email %}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 
 </html>

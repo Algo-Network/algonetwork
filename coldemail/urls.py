@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', include('authentication.urls')),
     path('email-data/', include('email_data.urls')),
+    path('generator/', include('generator_message.urls')),
     path('', include('dashboard.urls')),
     
 ]
