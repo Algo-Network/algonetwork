@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+
+</head>
+
+{% block content %}
+<br><br>
+<div>
+    <button type="button" href="{% url 'authentication:login' %} ">Chat GPT Generator Message</button>
+</div>
+{% endblock content %}
+
+</html>

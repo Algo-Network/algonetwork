@@ -29,35 +29,39 @@
                     class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                     <li><a>Dashboard</a></li>
 
-                    <li><a>Email</a></li>
+                    <li><a>Genarator Message</a></li>
+
+                    <li><a href="{% url 'email_data:email_list' %}"">Email Data</a></li>
                 </ul>
             </div>
-            <a class="text-xl font-semibold ml-5">AlgoNetwork</a>
+            <a class=" text-xl font-semibold ml-5">AlgoNetwork</a>
+            </div>
+            <div class="navbar-center hidden lg:flex">
+                <ul class="menu menu-horizontal px-1">
+                    <li><a>Dashboard</a></li>
+
+                    <li><a>Genarator Message</a></li>
+
+                    <li><a href="{% url 'email_data:email_list' %}">Email Data</a></li>
+                </ul>
+            </div>
+
+            <div class="navbar-end gap-1">
+                {% if request.session.uid %}
+                <a href="{% url 'authentication:logout' %}"
+                    class="p-2 px-3 rounded-lg bg-red-500 hover:bg-red-700 text-white font-semibold">Logout</a>
+                {% else %}
+                <a href="{% url 'authentication:login' %}"
+                    class="bg-gray-600 hover:bg-gray-900 p-2 font-semibold px-3 rounded-lg text-white">Login</a>
+                {% endif %}
+            </div>
+
+
+
         </div>
-        <div class="navbar-center hidden lg:flex">
-            <ul class="menu menu-horizontal px-1">
-                <li><a>Dashboard</a></li>
 
-                <li><a>Email</a></li>
-            </ul>
-        </div>
-
-        <div class="navbar-end gap-1">
-            {% if request.session.uid %}
-            <a href="{% url 'authentication:logout' %}"
-                class="p-2 px-3 rounded-lg bg-red-500 hover:bg-red-700 text-white font-semibold">Logout</a>
-            {% else %}
-            <a href="{% url 'authentication:login' %}"
-                class="bg-gray-600 hover:bg-gray-900 p-2 font-semibold px-3 rounded-lg text-white">Login</a>
-            {% endif %}
-        </div>
-
-
-
-    </div>
-
-    {% block content %}
-    {% endblock content %}
+        {% block content %}
+        {% endblock content %}
 
 </body>
 

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Email Form</title>
+</head>
+
+<body>
+    <h1>{% if form.instance.pk %}Edit Email{% else %}Create Email{% endif %}</h1>
+    <form method="post" action="{% url 'email_data:email_create' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    <a href="{% url 'email_data:email_list' %}">Cancel</a>
+</body>
+
+</html>

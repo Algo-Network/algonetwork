@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Email List</title>
+</head>
+
+<body>
+    <h1>Email List</h1>
+    <a href="{% url 'email_data:email_create' %}">Create New Email</a>
+    <ul>
+        {% for email in emails %}
+        <li>
+            <a href="{% url 'email_data:email_detail' email.email %}">{{ email.nama }}</a>
+            (<a href="{% url 'email_data:email_update' email.email %}">Edit</a>)
+            (<a href="{% url 'email_data:email_delete' email.email %}">Delete</a>)
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>

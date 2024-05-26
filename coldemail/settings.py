@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'tailwind',
     'theme',
     'authentication',
-    'dashboard'
+    'dashboard',
+    'email_data'
 ]
 
 MIDDLEWARE = [
