@@ -5,6 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <title>Cold Email Algo Network</title>
     {% tailwind_css %}
 
@@ -12,56 +14,62 @@
     {% endblock meta %}
 </head>
 
-<body>
-    <div class="navbar bg-base-100 shadow-lg">
-        <div class="navbar-start">
-            <div class="dropdown">
-                <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h8m-8 6h16" />
-                    </svg>
+<body class="p-0 m-0 box-border">
+    <header>
+        <div class="navbar bg-base-100 shadow-lg">
+            <div class="navbar-start">
+                <div class="dropdown">
+                    <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h8m-8 6h16" />
+                        </svg>
 
 
+                    </div>
+                    <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+                        <li><a href="/">Dashboard</a></li>
+
+                        <li><a href="{% url 'generator_message:generator' %}">Genarator Message</a></li>
+
+                        <li><a href="{% url 'email_data:email_list' %}"">Email Data</a></li>
+                    </ul>
                 </div>
-                <ul tabindex="0"
-                    class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                    <li><a href="/">Dashboard</a></li>
+                <a class=" text-xl font-semibold ml-5">AlgoNetwork</a>
+                </div>
+                <div class="navbar-center md:flex sm:hidden">
+                    <ul class="menu menu-horizontal px-1">
+                        <li><a href="/">Dashboard</a></li>
 
-                    <li><a href="{% url 'generator_message:generator' %}">Genarator Message</a></li>
+                        <li><a href="{% url 'generator_message:generator' %}">Genarator Message</a></li>
 
-                    <li><a href="{% url 'email_data:email_list' %}"">Email Data</a></li>
-                </ul>
+                        <li><a href=" {% url 'email_data:email_list' %}">Email Data</a></li>
+                    </ul>
+                </div>
+
+                <div class="navbar-end gap-1">
+                    {% if request.session.uid %}
+                    <a href="{% url 'authentication:logout' %}" class="btn btn-error text-white rounded-lg">Logout</a>
+                    {% else %}
+                    <a href="{% url 'authentication:login' %}"
+                        class="btn btn-neutral font-semibold rounded-lg">Login</a>
+                    {% endif %}
+                </div>
+
+
+
             </div>
-            <a class=" text-xl font-semibold ml-5">AlgoNetwork</a>
-            </div>
-            <div class="navbar-center hidden lg:flex">
-                <ul class="menu menu-horizontal px-1">
-                    <li><a href="/">Dashboard</a></li>
+    </header>
 
-                    <li><a href="{% url 'generator_message:generator' %}">Genarator Message</a></li>
-
-                    <li><a href=" {% url 'email_data:email_list' %}">Email Data</a></li>
-                </ul>
-            </div>
-
-            <div class="navbar-end gap-1">
-                {% if request.session.uid %}
-                <a href="{% url 'authentication:logout' %}"
-                    class="p-2 px-3 rounded-lg bg-red-500 hover:bg-red-700 text-white font-semibold">Logout</a>
-                {% else %}
-                <a href="{% url 'authentication:login' %}"
-                    class="bg-gray-600 hover:bg-gray-900 p-2 font-semibold px-3 rounded-lg text-white">Login</a>
-                {% endif %}
-            </div>
-
-
-
-        </div>
+    <main>
 
         {% block content %}
         {% endblock content %}
+
+    </main>
+
+
 
 </body>
 
