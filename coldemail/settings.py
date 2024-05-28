@@ -157,20 +157,20 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-import firebase_admin
-from firebase_admin import credentials
+# import firebase_admin
+# from firebase_admin import credentials
 
-cred = credentials.Certificate('serviceAccountKey.json')
-firebase_admin.initialize_app(cred)
+# cred = credentials.Certificate('serviceAccountKey.json')
+# firebase_admin.initialize_app(cred)
 
 
-FIREBASE_CONFIG = {
-    "apiKey": "AIzaSyCy3jcPcpSP836GBWlHVzTyb-ZInRr0o70",
-    "authDomain": "algonetwork.firebaseapp.com",
-    "databaseURL": "",
-    "projectId": "algonetwork",
-    "storageBucket": "algonetwork.appspot.com",
-    "messagingSenderId": "604392656198",
-    "appId": "1:604392656198:web:86deb1a323e4e57c696947",
-    "measurementId": "G-SNRJHB8ENL"
-}
+# FIREBASE_CONFIG = {
+#     "apiKey": "AIzaSyCy3jcPcpSP836GBWlHVzTyb-ZInRr0o70",
+#     "authDomain": "algonetwork.firebaseapp.com",
+#     "databaseURL": "",
+#     "projectId": "algonetwork",
+#     "storageBucket": "algonetwork.appspot.com",
+#     "messagingSenderId": "604392656198",
+#     "appId": "1:604392656198:web:86deb1a323e4e57c696947",
+#     "measurementId": "G-SNRJHB8ENL"
+# }
