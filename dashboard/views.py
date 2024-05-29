@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.admin.views.decorators import staff_member_required
 
-@user_passes_test(lambda u: u.is_superuser, login_url='/auth/login/')
+@staff_member_required(login_url='/auth/login/')
 def home(request):
-  return render(request, "Home.html")
+    return render(request, "Home.html")

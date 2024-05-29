@@ -174,3 +174,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     "appId": "1:604392656198:web:86deb1a323e4e57c696947",
 #     "measurementId": "G-SNRJHB8ENL"
 # }
+
+AUTH_USER_MODEL = 'authentication.CustomUser'

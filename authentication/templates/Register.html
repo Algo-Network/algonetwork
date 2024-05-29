@@ -4,12 +4,16 @@
 <div class="relative flex flex-col items-center justify-center h-screen overflow-hidden">
     {% if messages %}
     {% for message in messages %}
+    {% if message.tags == 'error' %}
     <p style="color: red;">{{ message }}</p>
+    {% elif message.tags == 'success' %}
+    <p style="color: green;">{{ message }}</p>
+    {% endif %}
     {% endfor %}
     {% endif %}
     <div class="w-full p-6 bg-white border-t-4 border-gray-600 rounded-md shadow-md border-top max-w-lg">
         <h1 class="text-3xl font-semibold text-center text-gray-700">
-            Admin Login
+            Register Admin
         </h1>
         <form class="space-y-4" method="post">
             {% csrf_token %}
@@ -22,13 +26,27 @@
             </div>
             <div>
                 <label class="label">
+                    <span class="text-base label-text font-semibold">Name</span>
+                </label>
+                <input id="name" name="name" type="text" placeholder="Full Name" class="w-full input input-bordered" />
+            </div>
+            <div>
+                <label class="label">
                     <span class="text-base label-text font-semibold">Password</span>
                 </label>
-                <input id="password" name="password" type="password" placeholder="Enter Password"
+                <input id="password1" name="password1" type="password" placeholder="Enter Password"
                     class="w-full input input-bordered" />
             </div>
             <div>
-                <button type="submit" class="btn btn-block btn-neutral rounded-md font-semibold font-xl">Login</button>
+                <label class="label">
+                    <span class="text-base label-text font-semibold">Confirm Password</span>
+                </label>
+                <input id="password2" name="password2" type="password" placeholder="Confirm Password"
+                    class="w-full input input-bordered" />
+            </div>
+            <div>
+                <button type="submit"
+                    class="btn btn-block btn-neutral rounded-md font-semibold font-xl">Register</button>
             </div>
         </form>
     </div>
