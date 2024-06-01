@@ -26,6 +26,15 @@ Jalankan perintah berikut untuk memulai server pengembangan Django:
 python manage.py runserver
 ```
 
+### 4. Menjalankan Celery
+
+```sh
+celery -A coldemail worker --pool=solo -l info # untuk running worker
+
+celery -A coldemail beat -l info # untuk logging check celery
+
+```
+
 ---
 
 ## Registrasi Akun Staf pada Algo Network
