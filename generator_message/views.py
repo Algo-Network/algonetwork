@@ -16,12 +16,32 @@ client = openai.OpenAI(api_key=config('OPENAI_API_KEY'))
 def generator_view(request):
     return render(request, "generator.html")
 
-def sendMessage(prompt):
-    promptText = f"""
-    Buatkan sebuah materi untuk konten Instagram yang singkat tentang {prompt}
-    dalam format list HTML.
-    Setiap sub-judul dan list ditebalkan menggunakan bold, serta diberikan baris baru menggunakan <br> jadi lebih rapih. Berikan juga caption di akhir dengan 20 hashtags
-    """
+# TODO: user_input dibuat dictionary aja nanti & Subject email bs jadi acuan atau exact
+def send_to_openai(user_input):
+    promptText = f'Buatkan email tentang {user_input}' 
+    # promptText = f"""
+    # Buatkan konten email dengan subject dan isi email yang sesuai dengan tujuan berikut:
+
+    # #### Tujuan Email
+    # {user_input}
+
+    # #### Audiens
+    # Pelanggan setia dan prospektif
+
+    # #### Gaya dan Tone
+    # Semi-formal dan informatif
+
+    # #### Poin-Poin Utama
+    # 1. Pengumuman acara webinar eksklusif
+    # 2. Topik utama yang akan dibahas dalam webinar
+    # 3. Pembicara utama dan kredibilitas mereka
+    # 4. Tanggal, waktu, dan cara mendaftar untuk webinar
+    # 5. Manfaat mengikuti webinar bagi pelanggan
+    # 6. Informasi kontak untuk pertanyaan lebih lanjut
+
+    # #### Subject Email
+    # Jangan Lewatkan Webinar Eksklusif Kami tentang Strategi Pemasaran Digital!
+    # """
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -33,19 +53,27 @@ def sendMessage(prompt):
     return response
 
 
+
 def chat(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
             user_input = data.get('message')
             if user_input:
-                response = sendMessage(user_input)
+                response = send_to_openai(user_input)
 
                 def generate():
+
                     for chunk in response:
-                        if 'choices' in chunk:
-                            text = chunk['choices'][0]['delta'].get('content', '')
-                            yield text
+                        for choice in chunk.choices:
+                            content = choice.delta.content
+                            yield content
+                        # if 'choices' in chunk:
+                        #     print("CHOICES IN CHUNK")
+                        #     text = chunk['choices'][0]['delta'].get('content', '')
+                        #     yield text
+                        # else:
+                        #     chunk.choices[0].delta.content
 
                 return StreamingHttpResponse(generate(), content_type='text/plain')
 
