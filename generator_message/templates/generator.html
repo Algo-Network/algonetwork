@@ -1,21 +1,106 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <title>Welcome</title>
-
 </head>
 
 {% block content %}
 <br><br>
-<div>
-    <button type="button" href="{% url 'authentication:login' %} ">Chat GPT Generator Message</button>
+<div class="grid place-items-center max-w-96">
+    <a href="{% url 'authentication:login' %}">
+        <button type="button">Chat GPT Generator Message</button>
+    </a>
 </div>
-{% endblock content %}
+<br><br>
+<div class="grid justify-center space-y-4">
+    <div>
+        <form method='post' id="message-form">
+            {% csrf_token %}
+            <p>Subject</p>
+            <input type="text" name="subject" placeholder="" class="input input-bordered w-full max-w-xs" id="subject">
+    </div>
+    <div>
+        <p>Send To</p>
+        <select class="select select-accent w-full max-w-xs" id="sendto" name="sendto">
+            <option disabled selected>To whom you send this email</option>
+            <option value="internal">Internal</option>
+            <option value="external">External</option>
+        </select>
+    </div>
+    <div>
+        <p>Modes</p>
+        <select class="select select-accent w-full max-w-xs" id="mode" name="mode">
+            <option disabled selected>Choose your mail's mode</option>
+            <option value="formal">Formal</option>
+            <option value="casual">Casual</option>
+            <option value="persuasive">Persuasive</option>
+            <option value="standard">Standard</option>
+            <option value="creative">Creative</option>
+        </select>
+    </div>
+    <div>
+        <p>Max Words</p>
+        <input type="text" name="maxword" placeholder="" class="input input-bordered w-full max-w-xs" id="max_words">
+    </div>
+    <div>
+        <p>Email's Detail</p>
+        <div class="border t-4 border-black">
+            <textarea class="textarea textarea-accent border-t-4 border-black" placeholder="" id="email_detail" name="email_detail"></textarea>
+        </div>
+    </div>
+    <div>
+        <button type="button" class="btn btn-primary btn-wide rounded-lg" onclick="sendMessage()">Generate Messages</button>
+    </div>
+</form>
+    <div class="">
+        <textarea placeholder="Prompting Result" id="response" name="response" rows="4" cols="50"></textarea>
+    </div>
+    <div>
+        <button type="submit" class="btn btn-primary btn-wide rounded-lg">Send Email</button>
+    </div>
+</div>
+<script>
+  async function sendMessage() {
+    const subject = document.getElementById('subject').value;
+    const sendto = document.getElementById('sendto').value;
+    const mode = document.getElementById('mode').value;
+    const max_words = document.getElementById('max_words').value;
+    const email_detail = document.getElementById('email_detail').value;
+    const message = {
+        'subject': subject,
+        'sendto': sendto,
+        'mode': mode,
+        'max_words': max_words,
+        'email_detail': email_detail,
+    };
 
-</html>
+    // Fetch the CSRF token from the CSRF input field
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+    const response = await fetch('{% url "generator_message:chat" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken // Ensure the CSRF token is added here
+        },
+        body: JSON.stringify({ message })
+    });
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder('utf-8');
+    let result = '';
+
+    while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        result += decoder.decode(value);
+        document.getElementById('response').innerText = result;
+    }
+}
+</script>
+{% endblock content %}
