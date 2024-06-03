@@ -2,20 +2,12 @@
 {% load static %}
 
 
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Welcome</title>
-
-</head>
+{% block meta %}
+<title>Dashboard</title>
+{% endblock meta %}
 
 {% block content %}
-<br><br>
-<div>
-    <button type="button" href="{% url 'authentication:login' %} ">Dashboard</button>
-</div>
-{% endblock content %}
-
-</html>
+<div class=" m-10 text-2xl font-semibold">
+    Dashboard
+</div {% endblock content %} </html>

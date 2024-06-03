@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-<title>{% if form.instance.pk %}Edit Email{% else %}Create Email{% endif %}</title>
+<title>{% if form.email.value %}Edit Email{% else %}Create Email{% endif %}</title>
 {% endblock meta %}
 
 {% block content %}
 <div class="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden m-10">
     <div class="px-6 py-4">
-        <h1 class="text-2xl font-bold mb-4">{% if form.instance.pk %}Edit Email{% else %}Create Email{% endif %}</h1>
+        <h1 class="text-2xl font-bold mb-4">{% if form.email.value %}Edit Email{% else %}Create Email{% endif %}</h1>
         <form method="post" class="space-y-4">
             {% csrf_token %}
             <div>

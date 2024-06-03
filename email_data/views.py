@@ -8,7 +8,6 @@ from django.contrib.admin.views.decorators import staff_member_required
 @staff_member_required(login_url='/auth/login/')
 def email_list(request):
     emails = EmailData.objects.all()
-    print(emails)
     return render(request, 'email_list.html', {'emails': emails})
 
 @staff_member_required(login_url='/auth/login/')

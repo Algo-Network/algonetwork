@@ -1,14 +1,12 @@
 from django import forms
-from django.forms import ModelForm
-from .models import EmailGenerator
+from email_data.models import EmailData
 
-class CustomPromptForm(forms.ModelForm):
-    subject = forms.CharField()
-    send_to = forms.CharField(widget=forms.ChoiceField)
-    mode = forms.CharField(widget=forms.ChoiceField)
+class EmailGeneratorForm(forms.Form):
+    LANG_CHOICES = [('id', 'Bahasa Indonesia'), ('en', 'English')]
+
+    subject = forms.CharField(max_length=100)
+    sendto = forms.ModelChoiceField(queryset=EmailData.objects.values_list('group', flat=True).distinct())
+    mode = forms.ChoiceField(choices=[('formal', 'Formal'), ('casual', 'Casual'), ('persuasive', 'Persuasive'), ('standard', 'Standard'), ('creative', 'Creative')])
     max_words = forms.IntegerField()
-    email_detail = forms.Textarea()
-    prompting_result = forms.Textarea()
-    class Meta:
-        model = EmailGenerator
-        fields =('subject','sendto','mode','max_words','email_detail','prompting_result')
+    email_detail = forms.CharField(widget=forms.Textarea)
+    language = forms.ChoiceField(choices=LANG_CHOICES)

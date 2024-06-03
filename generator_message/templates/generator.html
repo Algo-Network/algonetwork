@@ -1,106 +1,131 @@
 {% extends 'base.html' %}
-{% load static %}
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Welcome</title>
-</head>
 
 {% block content %}
-<br><br>
-<div class="grid place-items-center max-w-96">
-    <a href="{% url 'authentication:login' %}">
-        <button type="button">Chat GPT Generator Message</button>
-    </a>
+
+
+{% block meta %}
+<title>Generator Message</title>
+{% endblock meta %}
+
+<div class=" m-10 text-2xl font-semibold">
+    Message Generator
 </div>
-<br><br>
-<div class="grid justify-center space-y-4">
-    <div>
-        <form method='post' id="message-form">
+<div class="m-10 grid grid-cols-1 md:grid-cols-3 gap-4">
+    <!-- Form Section -->
+    <div class="md:col-span-1">
+        <form method='post' id="message-form" class="space-y-4 flex flex-col justify-center">
             {% csrf_token %}
-            <p>Subject</p>
-            <input type="text" name="subject" placeholder="" class="input input-bordered w-full max-w-xs" id="subject">
+            <div>
+                <label for="subject" class="block text-sm font-semibold text-gray-700">Subject</label>
+                <input type="text" name="subject" placeholder="" class="input input-bordered w-full max-w-xs"
+                    id="subject">
+            </div>
+            <div>
+                <label for="sendto" class="block text-sm font-semibold text-gray-700">Send To</label>
+                <select class="select select-accent w-full max-w-xs" id="sendto" name="sendto">
+                    <option disabled selected>To whom you send this email</option>
+                    <option value="HR">HR</option>
+                    <option value="RnD">RnD</option>
+                    <option value="Media">Media Informasi</option>
+                    <option value="Engineering">Engineering</option>
+                    <option value="Customers">Customers</option>
+                </select>
+            </div>
+            <div>
+                <label for="mode" class="block text-sm font-semibold text-gray-700">Modes</label>
+                <select class="select select-accent w-full max-w-xs" id="mode" name="mode">
+                    <option disabled selected>Choose your mail's mode</option>
+                    <option value="formal">Formal</option>
+                    <option value="casual">Casual</option>
+                    <option value="persuasive">Persuasive</option>
+                    <option value="standard">Standard</option>
+                    <option value="creative">Creative</option>
+                </select>
+            </div>
+            <div>
+                <label for="max_words" class="block text-sm font-semibold text-gray-700">Max Words</label>
+                <input type="number" name="maxword" placeholder="" class="input input-bordered w-full max-w-xs"
+                    id="max_words" max="200">
+            </div>
+            <div>
+                <label for="language" class="block text-sm font-semibold text-gray-700">Language</label>
+                <select class="select select-accent w-full max-w-xs" id="language" name="language">
+                    <option value="id">Bahasa Indonesia</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+            <div>
+                <label for="email_detail" class="block text-sm font-semibold text-gray-700">Email's Detail</label>
+                <textarea type="text" class="textarea input-bordered w-full max-w-xs" placeholder="" id="email_detail"
+                    name="email_detail"></textarea>
+            </div>
+
+            <div>
+                <button type="button" class="btn btn-primary rounded-lg text-white" onclick="sendMessage()">Generate
+                    Messages</button>
+            </div>
+        </form>
     </div>
-    <div>
-        <p>Send To</p>
-        <select class="select select-accent w-full max-w-xs" id="sendto" name="sendto">
-            <option disabled selected>To whom you send this email</option>
-            <option value="internal">Internal</option>
-            <option value="external">External</option>
-        </select>
-    </div>
-    <div>
-        <p>Modes</p>
-        <select class="select select-accent w-full max-w-xs" id="mode" name="mode">
-            <option disabled selected>Choose your mail's mode</option>
-            <option value="formal">Formal</option>
-            <option value="casual">Casual</option>
-            <option value="persuasive">Persuasive</option>
-            <option value="standard">Standard</option>
-            <option value="creative">Creative</option>
-        </select>
-    </div>
-    <div>
-        <p>Max Words</p>
-        <input type="text" name="maxword" placeholder="" class="input input-bordered w-full max-w-xs" id="max_words">
-    </div>
-    <div>
-        <p>Email's Detail</p>
-        <div class="border t-4 border-black">
-            <textarea class="textarea textarea-accent border-t-4 border-black" placeholder="" id="email_detail" name="email_detail"></textarea>
+
+    <!-- Response Section -->
+    <div class="md:col-span-2 flex relative bg-slate-100 rounded-xl">
+        <div class="m-4">
+            <span class="font-semibold">Message :</span>
+            <div placeholder="Prompting Result" id="response" name="response" rows="4" cols="50"></div>
+        </div>
+
+        <div class="flex justify-end absolute bottom-0 right-0 m-5">
+            <button type="submit" class="btn btn-primary btn-wide rounded-lg text-white">Send Email</button>
         </div>
     </div>
-    <div>
-        <button type="button" class="btn btn-primary btn-wide rounded-lg" onclick="sendMessage()">Generate Messages</button>
-    </div>
-</form>
-    <div class="">
-        <textarea placeholder="Prompting Result" id="response" name="response" rows="4" cols="50"></textarea>
-    </div>
-    <div>
-        <button type="submit" class="btn btn-primary btn-wide rounded-lg">Send Email</button>
-    </div>
+
 </div>
+
 <script>
-  async function sendMessage() {
-    const subject = document.getElementById('subject').value;
-    const sendto = document.getElementById('sendto').value;
-    const mode = document.getElementById('mode').value;
-    const max_words = document.getElementById('max_words').value;
-    const email_detail = document.getElementById('email_detail').value;
-    const message = {
-        'subject': subject,
-        'sendto': sendto,
-        'mode': mode,
-        'max_words': max_words,
-        'email_detail': email_detail,
-    };
+    async function sendMessage() {
+        const subject = document.getElementById('subject').value;
+        const sendto = document.getElementById('sendto').value;
+        const mode = document.getElementById('mode').value;
+        const max_words = document.getElementById('max_words').value;
+        const email_detail = document.getElementById('email_detail').value;
+        const language = document.getElementById('language').value;
+        const message = {
+            'subject': subject,
+            'sendto': sendto,
+            'mode': mode,
+            'max_words': max_words,
+            'email_detail': email_detail,
+            'language': language,
+            'company_name': "Algo Network"
 
-    // Fetch the CSRF token from the CSRF input field
-    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+        };
 
-    const response = await fetch('{% url "generator_message:chat" %}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken // Ensure the CSRF token is added here
-        },
-        body: JSON.stringify({ message })
-    });
+        // Fetch the CSRF token from the CSRF input field
+        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder('utf-8');
-    let result = '';
+        const response = await fetch('{% url "generator_message:chat" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken // Ensure the CSRF token is added here
+            },
+            body: JSON.stringify({ message })
+        });
 
-    while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
-        result += decoder.decode(value);
-        document.getElementById('response').innerText = result;
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder('utf-8');
+        let result = '';
+
+        try {
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) break;
+                result += decoder.decode(value);
+                document.getElementById('response').innerText = result.replace('None', '');
+            }
+        } catch (error) {
+            console.error('end stream');
+        }
     }
-}
 </script>
 {% endblock content %}

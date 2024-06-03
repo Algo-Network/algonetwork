@@ -1,23 +1,18 @@
 import openai
 import json
-from decouple import config
 import logging
+from django.conf import settings
 from django.shortcuts import render
 from django.http import StreamingHttpResponse, JsonResponse
 from django.contrib.admin.views.decorators import staff_member_required
-from .forms import CustomPromptForm
-from .models import EmailGenerator
 
 logger = logging.getLogger(__name__)
 
 # Set OpenAI API key and initialize OpenAI client
-client = openai.OpenAI(api_key=config('OPENAI_API_KEY'))
+client = openai.OpenAI(api_key=settings.OPENAI_API_KEY)
 
 
 logger = logging.getLogger(__name__)
-
-# Set OpenAI API key and initialize OpenAI client
-client = openai.OpenAI(api_key=config('OPENAI_API_KEY'))
 
 
 @staff_member_required(login_url='/auth/login/')
@@ -25,6 +20,7 @@ def generator_view(request):
     return render(request, "generator.html")
 
 # TODO: user_input dibuat dictionary aja nanti & Subject email bs jadi acuan atau exact
+@staff_member_required(login_url='/auth/login/')
 def send_to_openai(user_input):
     promptText = f'Buatkan email tentang {user_input}' 
     # promptText = f"""
@@ -61,7 +57,7 @@ def send_to_openai(user_input):
     return response
 
 
-
+@staff_member_required(login_url='/auth/login/')
 def chat(request):
     if request.method == 'POST':
         try:
@@ -90,26 +86,21 @@ def chat(request):
             return JsonResponse({'response': 'Error processing request'}, status=500)
     return JsonResponse({'response': 'Invalid request'}, status=400)
 
-def generate_data(request):
-    if request.method =='POST':
-        form = CustomPromptForm(request.POST)
+from .forms import EmailGeneratorForm
+
+@staff_member_required(login_url='/auth/login/')
+def generator_view(request):
+    form = EmailGeneratorForm()
+    if request.method == 'POST':
+        form = EmailGeneratorForm(request.POST)
         if form.is_valid():
+            # Proses formulir yang valid di sini
             subject = form.cleaned_data['subject']
             sendto = form.cleaned_data['sendto']
             mode = form.cleaned_data['mode']
             max_words = form.cleaned_data['max_words']
             email_detail = form.cleaned_data['email_detail']
-
-            user_input = {'subject':subject,
-                          'sendto':sendto,
-                          'mode':mode,
-                          'max_words':max_words,
-                          'email_detail':email_detail,
-                          }
-            prompting_result = chat(request)
-            email_gen = EmailGenerator(subject, sendto, mode, max_words, email_detail, prompting_result)
-            # email_gen.save()
-            return email_gen
-        else:
-            form = CustomPromptForm()
-        return render(request,'generator.html',{'form':form})
+            language = form.cleaned_data['language']
+            response_data = {'status': 'success', 'message': 'Email berhasil dibuat.'}
+            return JsonResponse(response_data)
+    return render(request, 'generator.html', {'form': form})

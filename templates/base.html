@@ -3,14 +3,15 @@
 <html lang="en" data-theme="corporate">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <title>Cold Email Algo Network</title>
     {% tailwind_css %}
 
     {% block meta %}
+    <title>{% block title %}{% endblock title %}</title>
     {% endblock meta %}
 </head>
 
@@ -36,10 +37,10 @@
             </div>
             <div class="navbar-center md:flex sm:hidden">
                 <ul class="menu menu-horizontal px-1">
-                    <li><a class="hover:text-blue-600" href="/">Dashboard</a></li>
-                    <li><a class="hover:text-blue-600" href="{% url 'generator_message:generator' %}">Generator
+                    <li><a href="/">Dashboard</a></li>
+                    <li><a href="{% url 'generator_message:generator' %}">Generator
                             Message</a></li>
-                    <li><a class="hover:text-blue-600" href="{% url 'email_data:email_list' %}">Email Data</a></li>
+                    <li><a href="{% url 'email_data:email_list' %}">Email Data</a></li>
 
                 </ul>
             </div>

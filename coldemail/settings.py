@@ -11,9 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config
 
-OPENAI_API_KEY = config('OPENAI_API_KEY')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,7 +34,7 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-NPM_BIN_PATH = '/opt/homebrew/bin/npm'
+NPM_BIN_PATH = "C:\\Program Files\\nodejs\\npm.cmd" # Ganti sesuai path dilocal mesin
 
 
 # Application definition
@@ -151,3 +149,12 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'authentication.CustomUser'
+
+
+from dotenv import load_dotenv
+
+# Muat file .env
+load_dotenv()
+
+# Baca kunci OpenAI dari .env
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
