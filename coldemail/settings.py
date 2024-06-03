@@ -93,16 +93,6 @@ WSGI_APPLICATION = 'coldemail.wsgi.application'
 
 import os
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.environ.get('DATABASE_NAME', 'postgres'),
-#         'USER': os.environ.get('DATABASE_USER', 'postgres'),
-#         'PASSWORD': os.environ.get('DATABASE_PASSWORD', 'algonetwork'),
-#         'HOST': os.environ.get('DATABASE_HOST', 'my-postgres'),
-#         'PORT': os.environ.get('DATABASE_PORT', '5432'),
-#     }
-# }
 
 DATABASES = {
     'default': {
@@ -156,23 +146,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# import firebase_admin
-# from firebase_admin import credentials
-
-# cred = credentials.Certificate('serviceAccountKey.json')
-# firebase_admin.initialize_app(cred)
-
-
-# FIREBASE_CONFIG = {
-#     "apiKey": "AIzaSyCy3jcPcpSP836GBWlHVzTyb-ZInRr0o70",
-#     "authDomain": "algonetwork.firebaseapp.com",
-#     "databaseURL": "",
-#     "projectId": "algonetwork",
-#     "storageBucket": "algonetwork.appspot.com",
-#     "messagingSenderId": "604392656198",
-#     "appId": "1:604392656198:web:86deb1a323e4e57c696947",
-#     "measurementId": "G-SNRJHB8ENL"
-# }
 
 AUTH_USER_MODEL = 'authentication.CustomUser'
