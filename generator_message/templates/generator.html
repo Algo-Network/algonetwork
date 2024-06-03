@@ -1,21 +1,48 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Welcome</title>
-
-</head>
-
 {% block content %}
-<br><br>
 <div>
-    <button type="button" href="{% url 'authentication:login' %} ">Chat GPT Generator Message</button>
+    <a href="{% url 'authentication:login' %}">Chat GPT Generator Message</a>
 </div>
-{% endblock content %}
 
-</html>
+<div>
+    <h1>ChatGPT Generator</h1>
+    <form id="messageForm">
+        {% csrf_token %}
+        <textarea id="message" name="message" rows="4" cols="50"></textarea><br>
+        <button type="button" onclick="sendMessage()">Send</button>
+    </form>
+    <p id="response"></p>
+</div>
+
+
+<script>
+    async function sendMessage() {
+        const message = document.getElementById('message').value;
+        const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+        const response = await fetch('{% url "generator_message:chat" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({ message })
+        });
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder('utf-8');
+        let result = '';
+
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            result += decoder.decode(value);
+            document.getElementById('response').innerText = result;
+        }
+    }
+</script>
+
+
+
+{% endblock content %}
