@@ -9,5 +9,6 @@ urlpatterns = [
     path('email-data/', include('email_data.urls')),
     path('generator/', include('generator_message.urls')),
     path('', include('dashboard.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls'))
     
 ]

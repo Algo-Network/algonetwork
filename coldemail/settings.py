@@ -52,8 +52,14 @@ INSTALLED_APPS = [
     'authentication',
     'dashboard',
     'email_data',
-    'generator_message'
+    'generator_message',
+    'ckeditor',
 ]
+ROOT_URLCONF = 'coldemail.urls'
+CKEDITOR_UPLOAD_PATH = "uploads/"  # Direktori untuk menyimpan file yang diunggah
+
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -66,7 +72,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'coldemail.urls'
+
 
 TEMPLATES = [
     {

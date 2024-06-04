@@ -2,18 +2,17 @@
 
 {% block content %}
 
-
 {% block meta %}
 <title>Generator Message</title>
 {% endblock meta %}
 
-<div class=" m-10 text-2xl font-semibold">
+<div class="m-10 text-2xl font-semibold">
     Message Generator
 </div>
 <div class="m-10 grid grid-cols-1 md:grid-cols-3 gap-4">
     <!-- Form Section -->
     <div class="md:col-span-1">
-        <form method='post' id="message-form" class="space-y-4 flex flex-col justify-center">
+        <form method="post" id="message-form" class="space-y-4 flex flex-col justify-center">
             {% csrf_token %}
             <div>
                 <label for="subject" class="block text-sm font-semibold text-gray-700">Subject</label>
@@ -69,16 +68,32 @@
 
     <!-- Response Section -->
     <div class="md:col-span-2 flex relative bg-slate-100 rounded-xl">
-        <div class="m-4">
+
+        <div class="m-4 w-full">
             <span class="font-semibold">Message :</span>
+            <form method="post" enctype="multipart/form-data" class="mt-10">
+                <div class="row g-2 align-items-center">
+                    {% csrf_token %}
+                    {{ form.media }}
+                    <div class="col">
+                        {{ form.content }}
+                    </div>
+                    <div class="col-auto">
+                        <label for="schedule_time" class="block text-sm font-semibold text-gray-700">Time
+                            Sending</label>
+                        <input type="datetime-local" name="{{ form.schedule_time.html_name }}"
+                            id="{{ form.schedule_time.id_for_label }}" class="input input-bordered max-w-xs"
+                            value="{{ form.schedule_time.value|default_if_none:'' }}" required>
+                    </div>
+                </div>
+                <div class="flex justify-end absolute bottom-0 right-0 m-5">
+                    <button type="submit" class="btn btn-primary btn-wide rounded-lg text-white">Send Email</button>
+                </div>
+            </form>
+
             <div placeholder="Prompting Result" id="response" name="response" rows="4" cols="50"></div>
         </div>
-
-        <div class="flex justify-end absolute bottom-0 right-0 m-5">
-            <button type="submit" class="btn btn-primary btn-wide rounded-lg text-white">Send Email</button>
-        </div>
     </div>
-
 </div>
 
 <script>
@@ -97,7 +112,6 @@
             'email_detail': email_detail,
             'language': language,
             'company_name': "Algo Network"
-
         };
 
         // Fetch the CSRF token from the CSRF input field
@@ -121,7 +135,9 @@
                 const { value, done } = await reader.read();
                 if (done) break;
                 result += decoder.decode(value);
-                document.getElementById('response').innerText = result.replace('None', '');
+                // Replace newline characters with <br> tags
+                const formattedResult = result.replace(/\n/g, '<br>');
+                CKEDITOR.instances['id_content'].setData(formattedResult);
             }
         } catch (error) {
             console.error('end stream');
