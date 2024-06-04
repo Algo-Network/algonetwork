@@ -86,21 +86,17 @@ def chat(request):
             return JsonResponse({'response': 'Error processing request'}, status=500)
     return JsonResponse({'response': 'Invalid request'}, status=400)
 
-from .forms import EmailGeneratorForm
+from .forms import EmailScheduleForm
 
 @staff_member_required(login_url='/auth/login/')
 def generator_view(request):
-    form = EmailGeneratorForm()
+    form = EmailScheduleForm()
     if request.method == 'POST':
-        form = EmailGeneratorForm(request.POST)
+        form = EmailScheduleForm(request.POST)
         if form.is_valid():
             # Proses formulir yang valid di sini
-            subject = form.cleaned_data['subject']
-            sendto = form.cleaned_data['sendto']
-            mode = form.cleaned_data['mode']
-            max_words = form.cleaned_data['max_words']
-            email_detail = form.cleaned_data['email_detail']
-            language = form.cleaned_data['language']
-            response_data = {'status': 'success', 'message': 'Email berhasil dibuat.'}
+            content = form.cleaned_data['content']
+            print(content)
+            response_data = {'status': 'success', 'message': 'Message berhasil dibuat.'}
             return JsonResponse(response_data)
     return render(request, 'generator.html', {'form': form})

@@ -69,14 +69,36 @@
 
     <!-- Response Section -->
     <div class="md:col-span-2 flex relative bg-slate-100 rounded-xl">
+
         <div class="m-4">
             <span class="font-semibold">Message :</span>
+            <form method="post" enctype="multipart/form-data" class="mt-10">
+                <div class="row g-2 align-items-center">
+                    {% csrf_token %}
+                    {{ form.media }}
+                    <div class="col">
+                        {{ form.content }}
+                    </div>
+                    <div class="col-auto">
+                        <label for="schedule_time" class="block text-sm font-semibold text-gray-700">Time
+                            Sending</label>
+                        <input type="datetime-local" name="{{ form.schedule_time.html_name }}"
+                            id="{{ form.schedule_time.id_for_label }}" class="input input-bordered max-w-xs"
+                            value="{{ form.schedule_time.value|default_if_none:'' }}" required>
+                    </div>
+
+                </div>
+                <div class="flex justify-end absolute bottom-0 right-0 m-5">
+                    <button type="submit" class="btn btn-primary btn-wide rounded-lg text-white">Send Email</button>
+                </div>
+            </form>
+
+
+
             <div placeholder="Prompting Result" id="response" name="response" rows="4" cols="50"></div>
         </div>
 
-        <div class="flex justify-end absolute bottom-0 right-0 m-5">
-            <button type="submit" class="btn btn-primary btn-wide rounded-lg text-white">Send Email</button>
-        </div>
+
     </div>
 
 </div>
