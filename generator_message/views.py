@@ -20,7 +20,6 @@ def generator_view(request):
     return render(request, "generator.html")
 
 # TODO: user_input dibuat dictionary aja nanti & Subject email bs jadi acuan atau exact
-@staff_member_required(login_url='/auth/login/')
 def send_to_openai(user_input):
     promptText = f'Buatkan email tentang {user_input}' 
     # promptText = f"""
