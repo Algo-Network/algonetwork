@@ -96,6 +96,8 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 <script>
     async function sendMessage() {
         const subject = document.getElementById('subject').value;
@@ -135,8 +137,8 @@
                 const { value, done } = await reader.read();
                 if (done) break;
                 result += decoder.decode(value);
-                // Replace newline characters with <br> tags and 'None' with an empty string
-                const formattedResult = result.replace(/\n/g, '<br>').replace(/None/g, '');
+                const cleanedResult = result
+                const formattedResult = marked.parse(cleanedResult);
                 CKEDITOR.instances['id_content'].setData(formattedResult);
             }
         } catch (error) {
