@@ -135,8 +135,8 @@
                 const { value, done } = await reader.read();
                 if (done) break;
                 result += decoder.decode(value);
-                // Replace newline characters with <br> tags
-                const formattedResult = result.replace(/\n/g, '<br>');
+                // Replace newline characters with <br> tags and 'None' with an empty string
+                const formattedResult = result.replace(/\n/g, '<br>')
                 CKEDITOR.instances['id_content'].setData(formattedResult);
             }
         } catch (error) {
