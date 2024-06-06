@@ -12,39 +12,44 @@ logger = logging.getLogger(__name__)
 client = openai.OpenAI(api_key=settings.OPENAI_API_KEY)
 
 
-logger = logging.getLogger(__name__)
-
-
 @staff_member_required(login_url='/auth/login/')
 def generator_view(request):
     return render(request, "generator.html")
 
 # TODO: user_input dibuat dictionary aja nanti & Subject email bs jadi acuan atau exact
 def send_to_openai(user_input):
-    promptText = f'Buatkan email tentang {user_input}' 
-    # promptText = f"""
-    # Buatkan konten email dengan subject dan isi email yang sesuai dengan tujuan berikut:
+    company_background = """Algo's Network adalah perusahaan agency yang bertujuan untuk memberikan solusi 
+    kepada business dengan memberikan layanan mengenai Data & AI Solutions, Digital Marketing, Software, 
+    Management Consulting, Media Production. Tujuan dari Algo's Network adalah membantu penerapan transformasi 
+    digital pada bisnis."""
 
-    # #### Tujuan Email
-    # {user_input}
+    if user_input['sendto'] == 'Customers':
+        audience_desc = "Customer perusahaan Algo's Network (BnB), yaitu pemilik bisnis, petinggi perusahaan, dan sejenisnya."
+    else:
+        audience_desc = "Karyawan perusahaan Algo's Network"
+    promptText = f"""
+    {company_background}
 
-    # #### Audiens
-    # Pelanggan setia dan prospektif
+    Anda adalah asisten terbaik di Algo's Network. Buatkan konten email yang sesuai dengan detail berikut,
 
-    # #### Gaya dan Tone
-    # Semi-formal dan informatif
+    #### Subject email
+    {user_input['subject']}
 
-    # #### Poin-Poin Utama
-    # 1. Pengumuman acara webinar eksklusif
-    # 2. Topik utama yang akan dibahas dalam webinar
-    # 3. Pembicara utama dan kredibilitas mereka
-    # 4. Tanggal, waktu, dan cara mendaftar untuk webinar
-    # 5. Manfaat mengikuti webinar bagi pelanggan
-    # 6. Informasi kontak untuk pertanyaan lebih lanjut
+    #### Audiens
+    {audience_desc}
 
-    # #### Subject Email
-    # Jangan Lewatkan Webinar Eksklusif Kami tentang Strategi Pemasaran Digital!
-    # """
+    #### Gaya dan Tone bahasa
+    {user_input['mode']}
+
+    #### Detail dan konteks email
+    {user_input['email_detail']}
+
+    #### Bahasa
+    {user_input['language']}
+
+    #### Keterangan tambahan
+    Jika subject email kurang menarik, buat lebih menarik agar audiens tertarik untuk membaca konten email. Gunakan bulletpoints jika diperlukan.
+    """
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -61,7 +66,7 @@ def chat(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            user_input = data.get('message')
+            user_input = data.get('message')  # dictionary
             if user_input:
                 response = send_to_openai(user_input)
 
@@ -71,12 +76,6 @@ def chat(request):
                         for choice in chunk.choices:
                             content = choice.delta.content
                             yield content
-                        # if 'choices' in chunk:
-                        #     print("CHOICES IN CHUNK")
-                        #     text = chunk['choices'][0]['delta'].get('content', '')
-                        #     yield text
-                        # else:
-                        #     chunk.choices[0].delta.content
 
                 return StreamingHttpResponse(generate(), content_type='text/plain')
 
