@@ -31,20 +31,15 @@
                 </select>
             </div>
             <div>
-                <label for="mode" class="block text-sm font-semibold text-gray-700">Modes</label>
+                <label for="mode" class="block text-sm font-semibold text-gray-700">Mode</label>
                 <select class="select select-accent w-full max-w-xs" id="mode" name="mode">
-                    <option disabled selected>Choose your mail's mode</option>
+                    <option disabled selected>Choose language style</option>
                     <option value="formal">Formal</option>
                     <option value="casual">Casual</option>
                     <option value="persuasive">Persuasive</option>
                     <option value="standard">Standard</option>
                     <option value="creative">Creative</option>
                 </select>
-            </div>
-            <div>
-                <label for="max_words" class="block text-sm font-semibold text-gray-700">Max Words</label>
-                <input type="number" name="maxword" placeholder="" class="input input-bordered w-full max-w-xs"
-                    id="max_words" max="200">
             </div>
             <div>
                 <label for="language" class="block text-sm font-semibold text-gray-700">Language</label>
@@ -55,7 +50,7 @@
             </div>
             <div>
                 <label for="email_detail" class="block text-sm font-semibold text-gray-700">Email's Detail</label>
-                <textarea type="text" class="textarea input-bordered w-full max-w-xs" placeholder="" id="email_detail"
+                <textarea type="text" class="textarea input-bordered w-full max-w-xs" rows="5" placeholder="" id="email_detail"
                     name="email_detail"></textarea>
             </div>
 
@@ -71,7 +66,7 @@
 
         <div class="m-4 w-full">
             <span class="font-semibold">Message :</span>
-            <form method="post" enctype="multipart/form-data" class="mt-10">
+            <form method="post" enctype="multipart/form-data" class="mt-3">
                 <div class="row g-2 align-items-center">
                     {% csrf_token %}
                     {{ form.media }}
@@ -79,7 +74,7 @@
                         {{ form.content }}
                     </div>
                     <div class="col-auto">
-                        <label for="schedule_time" class="block text-sm font-semibold text-gray-700">Time
+                        <label for="schedule_time" class="block mt-3 text-sm font-semibold text-gray-700">Time
                             Sending</label>
                         <input type="datetime-local" name="{{ form.schedule_time.html_name }}"
                             id="{{ form.schedule_time.id_for_label }}" class="input input-bordered max-w-xs"
@@ -108,7 +103,6 @@
             'subject': subject,
             'sendto': sendto,
             'mode': mode,
-            'max_words': max_words,
             'email_detail': email_detail,
             'language': language,
             'company_name': "Algo Network"
