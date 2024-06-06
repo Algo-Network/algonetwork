@@ -38,22 +38,17 @@ def send_to_openai(user_input):
 
     Anda adalah asisten terbaik di Algo's Network. Buatkan konten email yang sesuai dengan detail berikut,
 
-    #### Subject email
-    {user_input['subject']}
+    Subject email: {user_input['subject']}
 
-    #### Audiens
-    {audience_desc}
+    Audiens: {audience_desc}
 
-    #### Gaya dan Tone bahasa
-    {tone}
+    Gaya dan Tone bahasa: {tone}
 
-    #### Detail dan konteks email
-    {user_input['email_detail']}
+    Detail dan konteks email: {user_input['email_detail']}
 
-    #### Bahasa
-    {user_input['language']}
+    Bahasa: {user_input['language']}
 
-    #### Keterangan tambahan
+    Keterangan tambahan:
     1. Jika subject email kurang menarik, buat lebih menarik agar audiens tertarik untuk membaca konten email. 
     2. Gunakan bulletpoints jika diperlukan.
     3. Berikan bahasa yang concise, namun tetap memberikan pesan yang kuat
