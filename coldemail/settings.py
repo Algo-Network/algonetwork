@@ -54,9 +54,18 @@ INSTALLED_APPS = [
     'email_data',
     'generator_message',
     'ckeditor',
+    'sendingemail',
+    "django_celery_results",
+    "django_celery_beat",
 ]
+
 ROOT_URLCONF = 'coldemail.urls'
-CKEDITOR_UPLOAD_PATH = "uploads/"  # Direktori untuk menyimpan file yang diunggah
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js' 
 
 
 
@@ -137,7 +146,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Jakarta'
 
 USE_I18N = True
 
@@ -164,3 +173,43 @@ load_dotenv()
 
 # Baca kunci OpenAI dari .env
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+# Celery Configuration
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_TIMEZONE = 'Asia/Jakarta'
+CELERY_ENABLE_UTC = False
+
+
+# CELERY BEAT SCHEDULER
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+# REDIS CACHE
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
+
+
+# SMTP Settings
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_USE_TLS = True
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_HOST_USER ='algonetworkofficial@gmail.com'
+EMAIL_HOST_PASSWORD = "zqgustonluwvrdqa"
+DEFAULT_FROM_EMAIL = 'Celery <algonetworkofficial@gmail.com>'
+
+
+# zqgu ston luwv rdqa
+
