@@ -12,7 +12,7 @@
 <div class="m-10 grid grid-cols-1 md:grid-cols-3 gap-4">
     <!-- Form Section -->
     <div class="md:col-span-1">
-        <form method="post" id="message-form" class="space-y-4 flex flex-col justify-center">
+        <form id="message-form" class="space-y-4 flex flex-col justify-center">
             {% csrf_token %}
             <div>
                 <label for="subject" class="block text-sm font-semibold text-gray-700">Subject</label>
@@ -21,12 +21,12 @@
             </div>
             <div>
                 <label for="sendto" class="block text-sm font-semibold text-gray-700">Send To</label>
-                <select class="select select-accent w-full max-w-xs" id="sendto" name="sendto">
+                <select class="select select-accent w-full max-w-xs" name="sendto" id="sendto">
                     <option disabled selected>To whom you send this email</option>
-                    <option value="HR">HR</option>
-                    <option value="RnD">RnD</option>
-                    <option value="Media">Media Informasi</option>
-                    <option value="Engineering">Engineering</option>
+                    <option value="HR">Devisi HR</option>
+                    <option value="RnD">Devisi RnD</option>
+                    <option value="Media">Devisi Media Informasi</option>
+                    <option value="Engineering">Devisi Engineering</option>
                     <option value="Customers">Customers</option>
                 </select>
             </div>
@@ -71,7 +71,7 @@
 
         <div class="m-4 w-full">
             <span class="font-semibold">Message :</span>
-            <form method="post" enctype="multipart/form-data" class="mt-10">
+            <form enctype="multipart/form-data" class="mt-10">
                 <div class="row g-2 align-items-center">
                     {% csrf_token %}
                     {{ form.media }}
@@ -85,9 +85,17 @@
                             id="{{ form.schedule_time.id_for_label }}" class="input input-bordered max-w-xs"
                             value="{{ form.schedule_time.value|default_if_none:'' }}" required>
                     </div>
+
+                    <div class="col-auto hidden">
+                        <label for="schedule_time" class="block text-sm font-semibold text-gray-700">Subject</label>
+                        <input type="text" name="{{ form.subject.html_name }}" id="{{ form.subject.id_for_label }}"
+                            class="input input-bordered max-w-xs" value="{{ form.subject.value|default_if_none:'' }}"
+                            required>
+                    </div>
                 </div>
                 <div class="flex justify-end absolute bottom-0 right-0 m-5">
-                    <button type="submit" class="btn btn-primary btn-wide rounded-lg text-white">Send Email</button>
+                    <button type="submit" class="btn btn-primary btn-wide rounded-lg text-white"
+                        id="send-email-btn">Send Email</button>
                 </div>
             </form>
 
@@ -145,5 +153,54 @@
             console.error('end stream');
         }
     }
+
+    $('#send-email-btn').click(function (e) {
+        e.preventDefault();
+
+        // Mengambil nilai dari masing-masing bidang formulir
+        var department = $('#sendto').val();
+        var subject = $('#subject').val();
+        var content = CKEDITOR.instances['id_content'].getData(); // Mengambil konten dari CKEditor
+        var scheduleTime = $('#id_schedule_time').val();
+
+        console.log(department)
+        console.log(subject)
+        console.log(content)
+        console.log(scheduleTime)
+
+
+        // Membuat objek FormData untuk dikirimkan
+        var formData = new FormData();
+        formData.append('department', department);
+        formData.append('subject', subject);
+        formData.append('content', content);
+        formData.append('schedule_time', scheduleTime);
+
+        var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+        $.ajax({
+            url: '{% url "sendingemail:schedule_email" %}',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-CSRFToken': csrfToken
+            },
+            success: function (response) {
+                console.log(response);
+                if (response.success) {
+                    alert("Email scheduled/sent successfully!");
+                } else {
+                    alert("There was an error. Please try again.");
+                }
+
+            },
+            error: function (xhr, errmsg, err) {
+                console.log(xhr.status + ": " + xhr.responseText);
+                alert("There was an error. Please try again.");
+            }
+        });
+    });
 </script>
 {% endblock content %}

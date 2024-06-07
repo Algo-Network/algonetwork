@@ -1,13 +1,12 @@
-<!DOCTYPE html>
 <html>
 
 <head>
-    <title>Department Update</title>
+    <title>Email Template</title>
 </head>
 
 <body>
     <h1>Hello {{ department }} Team!</h1>
-    <p>This is an important update for your department.</p>
+    {{ content | safe }}
     <p>Thank you!</p>
 </body>
 

@@ -1,9 +1,12 @@
-# myapp/forms.py
-
 from django import forms
-from .models import EmailData
+from sendingemail.models import EmailSchedule
+from ckeditor.widgets import CKEditorWidget
 
-class EmailScheduleForm(forms.Form):
-    DEPARTMENT_CHOICES = EmailData.DEPARTMENT_CHOICES
-    department = forms.ChoiceField(choices=DEPARTMENT_CHOICES)
-    schedule_time = forms.DateTimeField(widget=forms.widgets.DateTimeInput(attrs={'type': 'datetime-local'}))
+class EmailScheduleForm(forms.ModelForm):
+    class Meta:
+        model = EmailSchedule
+        fields = ['department', 'subject', 'content', 'schedule_time']
+        widgets = {
+            'schedule_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'content': CKEditorWidget(),
+        }
