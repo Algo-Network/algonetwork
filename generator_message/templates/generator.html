@@ -42,11 +42,6 @@
                 </select>
             </div>
             <div>
-                <label for="max_words" class="block text-sm font-semibold text-gray-700">Max Words</label>
-                <input type="number" name="maxword" placeholder="" class="input input-bordered w-full max-w-xs"
-                    id="max_words" max="200">
-            </div>
-            <div>
                 <label for="language" class="block text-sm font-semibold text-gray-700">Language</label>
                 <select class="select select-accent w-full max-w-xs" id="language" name="language">
                     <option value="id">Bahasa Indonesia</option>
@@ -56,7 +51,7 @@
             <div>
                 <label for="email_detail" class="block text-sm font-semibold text-gray-700">Email's Detail</label>
                 <textarea type="text" class="textarea input-bordered w-full max-w-xs" placeholder="" id="email_detail"
-                    name="email_detail"></textarea>
+                    name="email_detail" rows="5"></textarea>
             </div>
 
             <div>
@@ -79,7 +74,7 @@
                         {{ form.content }}
                     </div>
                     <div class="col-auto">
-                        <label for="schedule_time" class="block text-sm font-semibold text-gray-700">Time
+                        <label for="schedule_time" class="block text-sm font-semibold text-gray-700 mt-3">Time
                             Sending</label>
                         <input type="datetime-local" name="{{ form.schedule_time.html_name }}"
                             id="{{ form.schedule_time.id_for_label }}" class="input input-bordered max-w-xs"
@@ -111,14 +106,12 @@
         const subject = document.getElementById('subject').value;
         const sendto = document.getElementById('sendto').value;
         const mode = document.getElementById('mode').value;
-        const max_words = document.getElementById('max_words').value;
         const email_detail = document.getElementById('email_detail').value;
         const language = document.getElementById('language').value;
         const message = {
             'subject': subject,
             'sendto': sendto,
             'mode': mode,
-            'max_words': max_words,
             'email_detail': email_detail,
             'language': language,
             'company_name': "Algo Network"

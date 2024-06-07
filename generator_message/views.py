@@ -16,15 +16,18 @@ client = openai.OpenAI(api_key=settings.OPENAI_API_KEY)
 def generator_view(request):
     return render(request, "generator.html")
 
-# TODO: user_input dibuat dictionary aja nanti & Subject email bs jadi acuan atau exact
 def send_to_openai(user_input):
     company_background = """Algo's Network adalah perusahaan agency yang bertujuan untuk memberikan solusi 
     kepada business dengan memberikan layanan mengenai Data & AI Solutions, Digital Marketing, Software, 
     Management Consulting, Media Production. Tujuan dari Algo's Network adalah membantu penerapan transformasi 
     digital pada bisnis."""
 
+    tone = user_input['mode']
+
     if user_input['sendto'] == 'Customers':
-        audience_desc = "Customer perusahaan Algo's Network (BnB), yaitu pemilik bisnis, petinggi perusahaan, dan sejenisnya."
+        audience_desc = "Customer perusahaan Algo's Network, yaitu pemilik bisnis, petinggi perusahaan, dan sejenisnya."
+        tone = "Gunakan kata-kata persuasif sesuai best practice dalam marketing & copywriting."
+
     else:
         audience_desc = "Karyawan perusahaan Algo's Network"
     promptText = f"""
@@ -32,23 +35,20 @@ def send_to_openai(user_input):
 
     Anda adalah asisten terbaik di Algo's Network. Buatkan konten email yang sesuai dengan detail berikut,
 
-    #### Subject email
-    {user_input['subject']}
+    Subject email: {user_input['subject']}
 
-    #### Audiens
-    {audience_desc}
+    Audiens: {audience_desc}
 
-    #### Gaya dan Tone bahasa
-    {user_input['mode']}
+    Gaya dan Tone bahasa: {tone}
 
-    #### Detail dan konteks email
-    {user_input['email_detail']}
+    Detail dan konteks email: {user_input['email_detail']}
 
-    #### Bahasa
-    {user_input['language']}
+    Bahasa: {user_input['language']}
 
-    #### Keterangan tambahan
-    Jika subject email kurang menarik, buat lebih menarik agar audiens tertarik untuk membaca konten email. Gunakan bulletpoints jika diperlukan.
+    Keterangan tambahan:
+    1. Jika subject email kurang menarik, buat lebih menarik agar audiens tertarik untuk membaca konten email. 
+    2. Gunakan bulletpoints jika diperlukan.
+    3. Berikan bahasa yang concise, namun tetap memberikan pesan yang kuat
     """
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",

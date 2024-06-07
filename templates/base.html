@@ -29,7 +29,7 @@
                     </div>
                     <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                         <li><a href="/">Dashboard</a></li>
-                        <li><a href="{% url 'generator_message:generator' %}">Generator Message</a></li>
+                        <li><a href="{% url 'generator_message:generator' %}">Message Generator</a></li>
                         <li><a href="{% url 'email_data:email_list' %}">Email Data</a></li>
                     </ul>
                 </div>
@@ -38,8 +38,8 @@
             <div class="navbar-center md:flex sm:hidden">
                 <ul class="menu menu-horizontal px-1">
                     <li><a href="/">Dashboard</a></li>
-                    <li><a href="{% url 'generator_message:generator' %}">Generator
-                            Message</a></li>
+                    <li><a href="{% url 'generator_message:generator' %}">
+                            Message Generator</a></li>
                     <li><a href="{% url 'email_data:email_list' %}">Email Data</a></li>
 
                 </ul>
@@ -47,8 +47,7 @@
             <div class="navbar-end gap-1">
                 {% if request.user.is_authenticated %}
                 <a href="{% url 'authentication:register' %}"
-                    class="btn btn-primary font-semibold text-white rounded-lg">Admin
-                    +</a>
+                    class="btn btn-primary font-semibold text-white rounded-lg">Create admin</a>
                 <a href="{% url 'authentication:logout' %}" class="btn btn-error text-white rounded-lg">Logout</a>
 
                 {% else %}
