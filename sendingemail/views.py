@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.utils import timezone
 from .models import EmailSchedule
 from .tasks import send_department_emails
@@ -90,3 +90,5 @@ def schedule_email_view(request):
 
 def schedule_success_view(request):
     return render(request, 'schedule_success.html')
+
+

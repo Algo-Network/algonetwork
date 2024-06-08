@@ -7,4 +7,5 @@ app_name = 'sendingemail'
 urlpatterns = [
     path('schedule-email/', schedule_email_view, name='schedule_email'),
     path('schedule-success/', schedule_success_view, name='schedule_success'),
+   
 ]
