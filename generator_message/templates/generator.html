@@ -138,7 +138,7 @@
                 const { value, done } = await reader.read();
                 if (done) break;
                 result += decoder.decode(value);
-                const cleanedResult = result
+                const cleanedResult = result.replace(/\n/g, '<br>');
                 const formattedResult = marked.parse(cleanedResult);
                 CKEDITOR.instances['id_content'].setData(formattedResult);
             }

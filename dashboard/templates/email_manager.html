@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block meta %}
+<title>Email Manager</title>
+{% endblock meta %}
+
+{% block content %}
+<dic class="bg-gray-100 m-10 w-full">
+    <div class="max-w-6xl mx-auto bg-white shadow-md rounded flex">
+        <div class="w-1/4 p-4 border-r">
+            <button id="showSent" class="w-full btn btn-primary text-white px-4 py-2 rounded mb-2">Terkirim</button>
+            <button id="showScheduled" class="w-full btn btn-success text-white px-4 py-2 rounded">Terjadwal</button>
+        </div>
+        <div class="w-3/4 p-4">
+            <table id="emailTable" class="display m-20" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Schedule Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table rows will be dynamically loaded here -->
+                </tbody>
+            </table>
+            <div id="emailDetails" class="bg-gray-50 p-4 rounded shadow-sm hidden">
+                <!-- <h2 class="text-lg font-bold mb-2">EmailSchedule object (<span id="emailId"></span>)</h2> -->
+                <div class="text-xl font-semibold my-5" id="emailSubject"></div>
+                <div><strong>Sent to:</strong> <span id="emailDepartment"></span></div>
+
+                <div class="my-2"><strong>Message:</strong></div>
+
+
+                <div id="emailContent" class="ck-content my-5"></div>
+                <div class="mt-2"><strong>Schedule time:</strong> <span id="emailScheduleTime"></span></div>
+                <button id="backButton" class="bg-gray-500 text-white px-4 py-2 rounded mt-2">Back</button>
+            </div>
+
+        </div>
+    </div>
+    <style>
+        .dataTables_length {
+            display: none !important;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            let emailTable = $('#emailTable').DataTable({
+                paging: true,
+                searching: false,
+                pageLength: 10,
+                ordering: true,
+                info: false,
+                lengthChange: false,
+                language: {
+                    "paginate": {
+                        "previous": "Prev",
+                        "next": "Next"
+                    }
+                },
+
+                ajax: {
+                    url: '/emails/sent/', // Adjust the URL accordingly
+                    dataSrc: 'emails'
+                },
+                columns: [
+                    { data: 'subject' },
+                    { data: 'schedule_time' }
+                ]
+            });
+
+            $('#showSent').click(function () {
+                emailTable.ajax.url('/emails/sent/').load(); // Update the table with sent emails
+                $('#emailTable_wrapper').removeClass('hidden');
+                $('#emailDetails').addClass('hidden');
+            });
+
+            $('#showScheduled').click(function () {
+                emailTable.ajax.url('/emails/scheduled/').load(); // Update the table with scheduled emails
+                $('#emailTable_wrapper').removeClass('hidden');
+                $('#emailDetails').addClass('hidden');
+            });
+
+            $('#emailTable tbody').on('click', 'tr', function () {
+                let data = emailTable.row(this).data();
+                fetchEmailDetails(data.id);
+            });
+
+            function fetchEmailDetails(id) {
+                $('#emailTable_wrapper').addClass('hidden');
+                $.ajax({
+                    url: `/emails/detail/${id}/`,
+                    method: 'GET',
+                    success: function (data) {
+                        $('#emailId').text(`(${data.id})`);
+                        $('#emailDepartment').text(data.department);
+                        $('#emailSubject').text(data.subject);
+                        $('#emailContent').html(data.content);
+                        $('#emailScheduleTime').text(data.schedule_time);
+
+                        $('#emailDetails').removeClass('hidden');
+
+                        $('#backButton').click(function () {
+                            $('#emailDetails').addClass('hidden');
+                            $('#emailTable_wrapper').removeClass('hidden');
+                        });
+                    }
+
+                });
+            }
+        });
+
+        function editEmail(id) {
+            window.location.href = `/edit-schedule-email/${id}/`;
+        }
+    </script>
+    </div>
+    {% endblock content %}
