@@ -21,23 +21,15 @@ from django.core.paginator import Paginator
 
 def get_sent_emails(request):
     sent_emails = EmailSchedule.objects.filter(schedule_time__lte=timezone.now())
-    total_emails = sent_emails.count()
-    page_size = 10  # Misalnya, Anda menggunakan 10 item per halaman
-    total_pages = math.ceil(total_emails / page_size)
     data = {
         'emails': [{'id': email.id, 'subject': email.subject, 'schedule_time': format_schedule_time(email.schedule_time)} for email in sent_emails],
-        'total_pages': total_pages
     }
     return JsonResponse(data)
 
 def get_scheduled_emails(request):
     scheduled_emails = EmailSchedule.objects.filter(schedule_time__gt=timezone.now())
-    total_emails = scheduled_emails.count()
-    page_size = 10  # Misalnya, Anda menggunakan 10 item per halaman
-    total_pages = math.ceil(total_emails / page_size)
     data = {
         'emails': [{'id': email.id, 'subject': email.subject, 'schedule_time': format_schedule_time(email.schedule_time)} for email in scheduled_emails],
-        'total_pages': total_pages
     }
     return JsonResponse(data)
 
