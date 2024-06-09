@@ -7,42 +7,112 @@
 {% endblock meta %}
 
 {% block content %}
-<dic class="bg-gray-100 m-10 w-full">
-    <div class="max-w-6xl mx-auto bg-white shadow-md rounded flex">
-        <div class="w-1/4 p-4 border-r">
-            <button id="showSent" class="w-full btn btn-primary text-white px-4 py-2 rounded mb-2">Terkirim</button>
-            <button id="showScheduled" class="w-full btn btn-success text-white px-4 py-2 rounded">Terjadwal</button>
-        </div>
-        <div class="w-3/4 p-4">
-            <table id="emailTable" class="display m-20" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>Subject</th>
-                        <th>Schedule Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Table rows will be dynamically loaded here -->
-                </tbody>
-            </table>
-            <div id="emailDetails" class="bg-gray-50 p-4 rounded shadow-sm hidden">
-                <!-- <h2 class="text-lg font-bold mb-2">EmailSchedule object (<span id="emailId"></span>)</h2> -->
-                <div class="text-xl font-semibold my-5" id="emailSubject"></div>
-                <div><strong>Sent to:</strong> <span id="emailDepartment"></span></div>
 
-                <div class="my-2"><strong>Message:</strong></div>
+<div class=" m-10 text-2xl font-semibold">
+    Dashboard
+</div>
+<div class="m-10 bg-white shadow-md rounded flex">
+    <div class="w-1/4 p-4 border-r">
 
-
-                <div id="emailContent" class="ck-content my-5"></div>
-                <div class="mt-2"><strong>Schedule time:</strong> <span id="emailScheduleTime"></span></div>
-                <button id="backButton" class="bg-gray-500 text-white px-4 py-2 rounded mt-2">Back</button>
+        <button id="showSent"
+            class="w-full mt-10 text-gray-600 border px-4 py-2 rounded mb-2 text-left hover:border-animate">Sent</button>
+        <button id="showScheduled"
+            class="w-full text-gray-600 border px-4 py-2 rounded text-left hover:border-animate">Scheduled</button>
+    </div>
+    <div class="w-3/4 p-4">
+        <table id="emailTable" class="display m-20" style="width:100%">
+            <thead class="bg-gray-950 text-white">
+                <tr>
+                    <th class="subject-col">Subject</th>
+                    <th class="time-col">Schedule Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Table rows will be dynamically loaded here -->
+            </tbody>
+        </table>
+        <div id="emailDetails" class="bg-gray-50 p-4 rounded shadow-sm hidden">
+            <div class="flex justify-between">
+                <button id="backButton" class="py-2 mt-2 border btn btn-neutral rounded-lg text-white">Back</button>
+                <button id="editButton"
+                    class="py-2 mt-2 border btn bg-orange-500 hover:bg-orange-600 hover:text-orange-100 rounded-lg text-white">Edit</button>
             </div>
 
+            <!-- <h2 class="text-lg font-bold mb-2">EmailSchedule object (<span id="emailId"></span>)</h2> -->
+            <div class="text-xl font-semibold mt-5" id="emailSubject"></div>
+            <span class="font-light text-sm" id="emailScheduleTime"></span>
+            <div class="my-2"><strong>Sent to:</strong> <span id="emailDepartment"></span></div>
+
+
+            <div id="emailContent" class="ck-content my-5"></div>
+
+
         </div>
+
     </div>
+
+
     <style>
         .dataTables_length {
             display: none !important;
+        }
+
+        .subject-col {
+            width: 66.66%;
+            /* 2/3 of the table width */
+        }
+
+        .time-col {
+            width: 33.33%;
+            /* 1/3 of the table width */
+        }
+
+        .hover\:border-animate {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .hover\:border-animate::before,
+        .hover\:border-animate::after {
+            content: '';
+            position: absolute;
+            border: 2px solid black;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            transition: transform 0.5s ease;
+            transform: scaleX(0) scaleY(0);
+        }
+
+        .hover\:border-animate::before {
+            top: 0;
+            left: 0;
+            transform-origin: bottom left;
+        }
+
+        .hover\:border-animate::after {
+            bottom: 0;
+            right: 0;
+            transform-origin: top right;
+        }
+
+        .hover\:border-animate:hover::before,
+        .hover\:border-animate:hover::after {
+            transform: scaleX(1) scaleY(1);
+        }
+
+        .dt-search label {
+            margin-right: 10px;
+            font-weight: 600;
+
+        }
+
+        .dt-search input[type="search"]:focus {
+            border-color: #DD6B20;
+            /* Warna fokus oranye */
+            outline: none;
+            box-shadow: 0 0 0 1px #DD6B20;
         }
     </style>
 
@@ -50,7 +120,7 @@
         $(document).ready(function () {
             let emailTable = $('#emailTable').DataTable({
                 paging: true,
-                searching: false,
+                searching: true,
                 pageLength: 10,
                 ordering: true,
                 info: false,
@@ -76,12 +146,14 @@
                 emailTable.ajax.url('/emails/sent/').load(); // Update the table with sent emails
                 $('#emailTable_wrapper').removeClass('hidden');
                 $('#emailDetails').addClass('hidden');
+                $('#editButton').hide();
             });
 
             $('#showScheduled').click(function () {
                 emailTable.ajax.url('/emails/scheduled/').load(); // Update the table with scheduled emails
                 $('#emailTable_wrapper').removeClass('hidden');
                 $('#emailDetails').addClass('hidden');
+                $('#editButton').show();
             });
 
             $('#emailTable tbody').on('click', 'tr', function () {
@@ -101,6 +173,8 @@
                         $('#emailContent').html(data.content);
                         $('#emailScheduleTime').text(data.schedule_time);
 
+
+
                         $('#emailDetails').removeClass('hidden');
 
                         $('#backButton').click(function () {
@@ -108,7 +182,6 @@
                             $('#emailTable_wrapper').removeClass('hidden');
                         });
                     }
-
                 });
             }
         });
@@ -117,5 +190,5 @@
             window.location.href = `/edit-schedule-email/${id}/`;
         }
     </script>
-    </div>
-    {% endblock content %}
+</div>
+{% endblock content %}

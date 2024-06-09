@@ -36,7 +36,6 @@ def get_scheduled_emails(request):
 
 def get_email_details(request, pk):
     email = get_object_or_404(EmailSchedule, pk=pk)
-    print(email.content)
     email_details = {
         'id': str(email.id),
         'department': email.department,

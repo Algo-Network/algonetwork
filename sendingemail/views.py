@@ -10,7 +10,7 @@ from .models import EmailSchedule
 from .tasks import send_department_emails_now
 from .forms import EmailScheduleForm 
 
-def send_email_now(department, subject, content):
+def send_email_now(request, department, subject, content):
     print(content)
     send_department_emails_now.delay(department, subject, content)
     return JsonResponse({'success': True, 'message': 'Email scheduled successfully'})

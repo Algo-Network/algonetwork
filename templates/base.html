@@ -3,7 +3,6 @@
 <html lang="en" data-theme="corporate">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -19,38 +18,53 @@
 
 <body class="p-0 m-0 box-border">
     <header>
-        <div class="navbar bg-base-100 shadow-lg">
+        <div class="navbar bg-gray-950 shadow-2xl">
             <div class="navbar-start">
                 <div class="dropdown">
                     <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
+                            stroke="white">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6h16M4 12h8m-8 6h16" />
                         </svg>
                     </div>
                     <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                        <li><a href="/">Dashboard</a></li>
-                        <li><a href="{% url 'generator_message:generator' %}">Message Generator</a></li>
-                        <li><a href="{% url 'email_data:email_list' %}">Email Data</a></li>
+                        <li><a href="/" class="{% if request.path == '/' %} text-orange-600 {% endif %}">Dashboard</a>
+                        </li>
+                        <li><a href="{% url 'generator_message:generator' %}"
+                                class="{% if request.path == '/generator/' %} text-orange-600 {% endif %}">Message
+                                Generator</a></li>
+                        <li><a href="{% url 'email_data:email_list' %}"
+                                class="{% if request.path == '/email-data/' %} text-orange-600 {% endif %}">Email
+                                Data</a></li>
                     </ul>
                 </div>
-                <a class="text-xl font-semibold ml-5">AlgoNetwork</a>
+                <a class="text-xl font-semibold ml-5"><span><img width="200 rem"
+                            src="https://storage.googleapis.com/algonetwork/logo%20v1%20white%404x.png"
+                            class="text-black" alt="logo"></span></a>
             </div>
-            <div class="navbar-center md:flex sm:hidden">
-                <ul class="menu menu-horizontal px-1">
-                    <li><a href="/">Dashboard</a></li>
-                    <li><a href="{% url 'generator_message:generator' %}">
-                            Message Generator</a></li>
-                    <li><a href="{% url 'email_data:email_list' %}">Email Data</a></li>
 
+
+            <div class="navbar-center hidden lg:flex">
+                <ul class="menu menu-horizontal px-1">
+                    <li><a href="/"
+                            class="{% if request.path == '/' %} text-orange-600 {% else %} text-white {% endif %} ">Dashboard</a>
+                    </li>
+                    <li><a href="{% url 'generator_message:generator' %}"
+                            class="{% if request.path == '/generator/' %} text-orange-600 {% else %} text-white {% endif %} ">Message
+                            Generator</a></li>
+                    <li><a href="{% url 'email_data:email_list' %}"
+                            class="{% if request.path == '/email-data/' %} text-orange-600 {% else %} text-white {% endif %} ">Email
+                            Data</a></li>
                 </ul>
             </div>
             <div class="navbar-end gap-1">
                 {% if request.user.is_authenticated %}
                 <a href="{% url 'authentication:register' %}"
-                    class="btn btn-primary font-semibold text-white rounded-lg">Create admin</a>
-                <a href="{% url 'authentication:logout' %}" class="btn btn-error text-white rounded-lg">Logout</a>
+                    class="btn bg-orange-500 hover:bg-orange-600 hover:text-orange-100 font-semibold text-white rounded-lg">Admin
+                    +</a>
+                <a href="{% url 'authentication:logout' %}"
+                    class="btn bg-red-600 hover:bg-red-700 hover:text-red-100 text-white rounded-lg">Logout</a>
 
                 {% else %}
 
