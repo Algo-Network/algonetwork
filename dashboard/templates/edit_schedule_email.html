@@ -36,10 +36,7 @@
                     value="{{ form.schedule_time.value|date:'Y-m-d\\TH:i' }}"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
             </div>
-
         </div>
-
-
 
         <div class="mb-4">
             <label for="id_content" class="block text-gray-700 text-sm font-bold mb-2">Message</label>
@@ -69,7 +66,7 @@
                 data: formData,
                 success: function (response) {
                     if (response.status === 'success') {
-                        window.location.reload(); // Reload the page on success
+                        window.location.reload();
                     } else {
                         alert(response.message);
                     }
@@ -79,7 +76,7 @@
     });
 
     function closeEditModal() {
-        window.history.back(); // Go back to the previous page
+        window.history.back();
     }
 </script>
 {% endblock content %}

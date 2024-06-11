@@ -1,22 +1,20 @@
-from django.shortcuts import render
 from django.utils import timezone
 from django_celery_beat.models import CrontabSchedule, PeriodicTask
 from django.http import JsonResponse
-from datetime import datetime
-import pytz  
 import json
-from django.conf import settings
 from .models import EmailSchedule
-from .tasks import send_department_emails_now, send_department_emails
+from .tasks import send_department_emails_now
 from .forms import EmailScheduleForm 
+from django.contrib.admin.views.decorators import staff_member_required
 
+@staff_member_required(login_url='/auth/login/')
 def send_email_now(request, department, subject, content):
-    print(content)
     send_department_emails_now.delay(department, subject, content, request.user.email)
     return JsonResponse({'success': True, 'message': 'Email sent successfully'})
 
 from django.utils import timezone
 
+@staff_member_required(login_url='/auth/login/')
 def schedule_email_post(request):
     if request.method == 'POST':
         form = EmailScheduleForm(request.POST)
@@ -25,7 +23,6 @@ def schedule_email_post(request):
         subject = request.POST.get('subject')
         content = request.POST.get('content')
         schedule_time_str = request.POST.get('schedule_time')
-        print(schedule_time_str)
         if not schedule_time_str:
             return send_email_now(request, department, subject, content)
         else:
@@ -33,7 +30,6 @@ def schedule_email_post(request):
                 schedule_time = timezone.datetime.fromisoformat(schedule_time_str)
                 schedule_time = timezone.make_aware(schedule_time, timezone=timezone.get_current_timezone())  # Make it timezone aware
             except ValueError as e:
-                print(f"Error converting schedule_time_str: {e}")
                 return JsonResponse({'success': False, 'errors': 'Invalid datetime format'})
             
             # Save EmailSchedule
@@ -44,7 +40,6 @@ def schedule_email_post(request):
                 schedule_time=schedule_time,
                 user=request.user
             )
-
 
             # Save PeriodicTask
             day_of_week = schedule_time.weekday() + 1
@@ -70,7 +65,5 @@ def schedule_email_post(request):
         return JsonResponse({'success': False, 'errors': 'Invalid request method'})
 
 
-def schedule_success_view(request):
-    return render(request, 'schedule_success.html')
 
 

@@ -12,13 +12,8 @@ from authentication.models import CustomUser
 
 @shared_task(bind=True)
 def send_department_emails_now(self, department, subject, content, user_email):
-    print(f'Starting task to send emails to {department} department')
     recipients = EmailData.objects.filter(group=department)
-    print(f'Found {recipients.count()} recipients in {department} department')
-    
     html_message = render_to_string('email_template.html', {'department': department, 'content': content})
-
-    print("html ",html_message)
     from_email = settings.EMAIL_HOST_USER
 
     for recipient in recipients:
@@ -28,13 +23,13 @@ def send_department_emails_now(self, department, subject, content, user_email):
             from_email,
             [recipient.email],
             html_message=html_message,
-            fail_silently=True,  # Fail silently should be False for debugging
+            fail_silently=True, 
         )
         print(f'Email sent to {recipient.email}')
 
     schedule_time = timezone.now()
     
-    # Mencari CustomUser berdasarkan email yang diberikan
+
     try:
         user = CustomUser.objects.get(email=user_email)
     except CustomUser.DoesNotExist:
@@ -53,13 +48,8 @@ def send_department_emails_now(self, department, subject, content, user_email):
 
 @shared_task(bind=True)
 def send_department_emails(self, department, subject, content, id):
-    print(f'Starting task to send emails to {department} department')
-    recipients = EmailData.objects.filter(group=department)
-    print(f'Found {recipients.count()} recipients in {department} department')
-    
+    recipients = EmailData.objects.filter(group=department) 
     html_message = render_to_string('email_template.html', {'department': department, 'content': content})
-
-    print("html ", html_message)
     from_email = settings.EMAIL_HOST_USER
 
     for recipient in recipients:
@@ -69,11 +59,8 @@ def send_department_emails(self, department, subject, content, id):
             from_email,
             [recipient.email],
             html_message=html_message,
-            fail_silently=True,  # Fail silently should be False for debugging
+            fail_silently=True, 
         )
-        print(f'Email sent to {recipient.email}')
-
-    # Update status sent to True for the corresponding EmailSchedule
     email_schedule = EmailSchedule.objects.get(id=id)
     email_schedule.status_sent = True
     email_schedule.save()

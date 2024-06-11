@@ -8,20 +8,11 @@ from sendingemail.forms import EmailScheduleForm
 from django.utils import timezone
 import json
 import pytz
-
 from django.views.decorators.csrf import csrf_exempt
-
-@staff_member_required(login_url='/auth/login/')
-def home(request):
-
-
-    
-    return render(request, "email_manager.html")
 
 def format_schedule_time(utc_time):
     jakarta_timezone = pytz.timezone('Asia/Jakarta')
     return utc_time.astimezone(jakarta_timezone)
-
 
 @staff_member_required(login_url='/auth/login/')
 def get_sent_emails(request):
@@ -66,7 +57,6 @@ def edit_schedule_email_view(request, pk):
             email_schedule = form.save(commit=False)
             schedule_time = email_schedule.schedule_time
 
-            # Update the periodic task with new crontab schedule and args
             day_of_week = schedule_time.weekday() + 1
             if day_of_week == 7:
                 day_of_week = 0
@@ -79,14 +69,11 @@ def edit_schedule_email_view(request, pk):
                 day_of_week=day_of_week
             )
 
-            # Get the old periodic task and update it
             old_task_name = f"Send email to {old_department} at {format_schedule_time(old_schedule_time)}"
             periodic_task = get_object_or_404(PeriodicTask, name=old_task_name)
             
-            # Save changes to email_schedule first
             email_schedule.save()
 
-            # Update the name, crontab, args, and expiration
             new_task_name = f"Send email to {email_schedule.department} at {format_schedule_time(schedule_time)}"
             periodic_task.name = new_task_name
             periodic_task.crontab = schedule
@@ -107,8 +94,6 @@ def edit_schedule_email_view(request, pk):
 def delete_email(request, pk):
     if request.method == 'POST':
         email = get_object_or_404(EmailSchedule, pk=pk)
-
-  
         periodic_task = PeriodicTask.objects.filter(
             name=f"Send email to {email.department} at {format_schedule_time(email.schedule_time)}"
         ).first()
