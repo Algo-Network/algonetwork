@@ -54,3 +54,8 @@ def register_user(request):
 def logout_user(request):
     logout(request)
     return redirect('authentication:login')
+
+
+def forgot_password(request):
+    context = {}
+    return render(request, 'forgotpassword.html', context)

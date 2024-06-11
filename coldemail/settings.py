@@ -209,7 +209,7 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_HOST_USER ='algonetworkofficial@gmail.com'
 EMAIL_HOST_PASSWORD = "zqgustonluwvrdqa"
-DEFAULT_FROM_EMAIL = 'Celery <algonetworkofficial@gmail.com>'
+DEFAULT_FROM_EMAIL = 'algonetworkofficial@gmail.com'
 
 
 # zqgu ston luwv rdqa
