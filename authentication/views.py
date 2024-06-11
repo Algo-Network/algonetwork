@@ -45,7 +45,7 @@ def register_user(request):
             return render(request, 'register.html', {'form': form})
     else:
         form = CustomUserCreationForm()
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'Register.html', {'form': form})
 
 
 
@@ -54,7 +54,3 @@ def logout_user(request):
     logout(request)
     return redirect('authentication:login')
 
-
-def forgot_password(request):
-    context = {}
-    return render(request, 'forgotpassword.html', context)
