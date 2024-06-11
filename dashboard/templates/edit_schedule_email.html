@@ -1,15 +1,67 @@
-<form method="post" id="editScheduleForm">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit"
-        class="btn bg-blue-500 hover:bg-blue-600 hover:text-blue-100 rounded-lg text-white">Save</button>
-    <button type="button" class="btn btn-neutral rounded-lg text-white" onclick="closeEditModal()">Cancel</button>
-</form>
+{% extends 'base.html' %}
 
+{% block meta %}
+<title>Edit Message</title>
+{% endblock meta %}
+
+{% block content %}
+<div class="flex justify-center m-10">
+    <form method="post" id="editScheduleForm">
+        {% csrf_token %}
+
+        <div class="mb-4">
+            <label for="id_subject" class="block text-gray-700 text-sm font-bold mb-2">Subject</label>
+            <input type="text" id="id_subject" name="subject" value="{{ form.subject.value }}"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+
+        <div class="flex gap-5 w-full justify-center items-center">
+            <div class="mb-4 w-1/2">
+                <label for="id_department" class="block text-gray-700 text-sm font-bold mb-2">Department</label>
+                <select name="{{ form.department.html_name }}" id="{{ form.department.id_for_label }}"
+                    class="input input-bordered w-full">
+                    {% for value, label in form.department.field.choices %}
+                    {% if form.department.value|stringformat:"s" == value|stringformat:"s" %}
+                    <option value="{{ value }}" selected>{{ label }}</option>
+                    {% else %}
+                    <option value="{{ value }}">{{ label }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-4 w-1/2">
+                <label for="id_schedule_time" class="block text-gray-700 text-sm font-bold mb-2">Schedule Time</label>
+                <input type="datetime-local" id="id_schedule_time" name="schedule_time"
+                    value="{{ form.schedule_time.value|date:'Y-m-d\\TH:i' }}"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
+
+        </div>
+
+
+
+        <div class="mb-4">
+            <label for="id_content" class="block text-gray-700 text-sm font-bold mb-2">Message</label>
+            {{ form.content }}
+        </div>
+
+        {{ form.media }}
+
+        <button type="submit"
+            class=" border btn-sm md:btn-md btn bg-orange-500 hover:bg-orange-600 hover:text-orange-100 rounded-lg text-white text-sm md:text-base">Save</button>
+        <button type="button"
+            class="border btn-sm md:btn-md btn bg-red-600 hover:bg-red-700 hover:text-red-100 rounded-lg text-white text-sm  md:text-base"
+            onclick="closeEditModal()">Cancel</button>
+    </form>
+</div>
 <script>
     $(document).ready(function () {
         $('#editScheduleForm').submit(function (event) {
             event.preventDefault();
+            for (instance in CKEDITOR.instances) {
+                CKEDITOR.instances[instance].updateElement();
+            }
             let formData = $(this).serialize();
             $.ajax({
                 url: $(this).attr('action'),
@@ -25,4 +77,9 @@
             });
         });
     });
+
+    function closeEditModal() {
+        window.history.back(); // Go back to the previous page
+    }
 </script>
+{% endblock content %}
