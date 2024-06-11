@@ -22,7 +22,7 @@ def send_email_now(request, department, subject, content):
         schedule_time=schedule_time
     )
     email_schedule.save()
-    
+    print("sukses")
     return JsonResponse({'success': True, 'message': 'Email scheduled successfully'})
 
 def schedule_email_view(request):
