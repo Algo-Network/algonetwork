@@ -30,10 +30,10 @@ def send_to_openai(user_input):
 
     else:
         audience_desc = "Karyawan perusahaan Algo's Network"
-    promptText = f"""
+    prompt_text = f"""
     {company_background}
 
-    Anda adalah asisten terbaik di Algo's Network. Buatkan konten email yang sesuai dengan detail berikut,
+    Anda adalah asisten terbaik di Algo's Network. Buatkan konten email (tanpa subject) yang sesuai dengan detail berikut,
 
     Subject email: {user_input['subject']}
 
@@ -46,15 +46,16 @@ def send_to_openai(user_input):
     Bahasa: {user_input['language']}
 
     Keterangan tambahan:
-    1. Jika subject email kurang menarik, buat lebih menarik agar audiens tertarik untuk membaca konten email. 
-    2. Gunakan bulletpoints jika diperlukan.
-    3. Berikan bahasa yang concise, namun tetap memberikan pesan yang kuat
+    1. Gunakan bulletpoints jika diperlukan.
+    2. Berikan bahasa yang concise, namun tetap memberikan pesan yang kuat
+    3. Pada greetings awal, berikan kode {{{{ nama }}}} untuk menyebut nama receiver.
+    4. Berikan keterangan Algo's Network sebagai sender di bagian bawah email
     """
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": promptText}
+            {"role": "user", "content": prompt_text}
         ],
         stream=True
     )
