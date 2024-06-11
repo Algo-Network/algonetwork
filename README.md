@@ -29,6 +29,10 @@ python manage.py runserver
 ### 4. Menjalankan Celery
 
 ```sh
+
+cd .\env\Scripts\
+.\activate
+cd ..\..
 celery -A coldemail worker --pool=solo -l info # untuk running worker
 
 celery -A coldemail beat -l info # untuk logging check celery
@@ -133,8 +137,11 @@ Review the following messages and see how many of the suggested guidelines they 
 5. _empty commit messages_
 
 Writing good commit messages is an extremely beneficial skill to develop, and it helps you communicate and collaborate with your team. Commits serve as an archive of changes. They can become an ancient manuscript to help us decipher the past, and make reasoned decisions in the future.
+
 # Deskripsi Fitur
+
 ## Generator Email (FE + BE)
+
 Pastikan telah melakukan migrasi terlebih dahulu:
 python manage.py makemigrations
 python manage.py migrate

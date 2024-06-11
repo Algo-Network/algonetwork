@@ -1,87 +1,170 @@
 {% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en" data-theme="corporate">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css"
+    />
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
-
-    {% tailwind_css %}
-
-    {% block meta %}
+    <style>
+      #id_email,
+      #id_new_password1,
+      #id_new_password2 {
+        width: 100%;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        border-radius: 0.25rem;
+        border: 1px solid #ccc;
+      }
+    </style>
+    {% tailwind_css %} {% block meta %}
     <title>{% block title %}{% endblock title %}</title>
     {% endblock meta %}
+  </head>
 
-
-</head>
-
-
-<body class="p-0 m-0 box-border">
+  <body class="p-0 m-0 box-border">
     <header>
-        <div class="navbar bg-gray-950 shadow-2xl">
-            <div class="navbar-start">
-                <div class="dropdown">
-                    <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                            stroke="white">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 6h16M4 12h8m-8 6h16" />
-                        </svg>
-                    </div>
-                    <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                        <li><a href="/" class="{% if request.path == '/' %} text-orange-600 {% endif %}">Dashboard</a>
-                        </li>
-                        <li><a href="{% url 'generator_message:generator' %}"
-                                class="{% if request.path == '/generator/' %} text-orange-600 {% endif %}">Message
-                                Generator</a></li>
-                        <li><a href="{% url 'email_data:email_list' %}"
-                                class="{% if request.path == '/email-data/' %} text-orange-600 {% endif %}">Email
-                                Data</a></li>
-                    </ul>
-                </div>
-                <a class="text-xl font-semibold ml-5"><span><img width="200 rem"
-                            src="https://storage.googleapis.com/algonetwork/logo%20v1%20white%404x.png"
-                            class="text-black" alt="logo"></span></a>
+      <div class="navbar bg-gray-950 shadow-2xl">
+        <div class="navbar-start">
+          <div class="dropdown">
+            <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="white"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h8m-8 6h16"
+                />
+              </svg>
             </div>
-
-
-            <div class="navbar-center hidden lg:flex">
-                <ul class="menu menu-horizontal px-1">
-                    <li><a href="/"
-                            class="{% if request.path == '/' %} text-orange-600 {% else %} text-white {% endif %} ">Dashboard</a>
-                    </li>
-                    <li><a href="{% url 'generator_message:generator' %}"
-                            class="{% if request.path == '/generator/' %} text-orange-600 {% else %} text-white {% endif %} ">Message
-                            Generator</a></li>
-                    <li><a href="{% url 'email_data:email_list' %}"
-                            class="{% if request.path == '/email-data/' %} text-orange-600 {% else %} text-white {% endif %} ">Email
-                            Data</a></li>
-                </ul>
-            </div>
-            <div class="navbar-end gap-1">
-                {% if request.user.is_authenticated %}
-                <a href="{% url 'authentication:register' %}"
-                    class="btn bg-orange-500 hover:bg-orange-600 hover:text-orange-100 font-semibold text-white rounded-lg">Admin
-                    +</a>
-                <a href="{% url 'authentication:logout' %}"
-                    class="btn bg-red-600 hover:bg-red-700 hover:text-red-100 text-white rounded-lg">Logout</a>
-
-                {% else %}
-
-                <a href="{% url 'authentication:login' %}"
-                    class="btn bg-orange-500 hover:bg-orange-600 hover:text-orange-100 font-semibold rounded-lg text-white">Login</a>
-                {% endif %}
-            </div>
+            <ul
+              tabindex="0"
+              class="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+            >
+              <li>
+                <a
+                  href="/"
+                  class="{% if request.path == '/' %} text-orange-600 {% endif %}"
+                  >Dashboard</a
+                >
+              </li>
+              <li>
+                <a
+                  href="{% url 'generator_message:generator' %}"
+                  class="{% if request.path == '/generator/' %} text-orange-600 {% endif %}"
+                  >Message Generator</a
+                >
+              </li>
+              <li>
+                <a
+                  href="{% url 'email_data:email_list' %}"
+                  class="{% if request.path == '/email-data/' %} text-orange-600 {% endif %}"
+                  >Email Data</a
+                >
+              </li>
+            </ul>
+          </div>
+          <a class="text-xl font-semibold ml-5"
+            ><span
+              ><img
+                width="200 rem"
+                src="https://storage.googleapis.com/algonetwork/logo%20v1%20white%404x.png"
+                class="text-black"
+                alt="logo" /></span
+          ></a>
         </div>
+
+        <div class="navbar-center hidden lg:flex">
+          <ul class="menu menu-horizontal px-1">
+            <li>
+              <a
+                href="/"
+                class="{% if request.path == '/' %} text-orange-600 {% else %} text-white {% endif %}"
+                >Dashboard</a
+              >
+            </li>
+            <li>
+              <a
+                href="{% url 'generator_message:generator' %}"
+                class="{% if request.path == '/generator/' %} text-orange-600 {% else %} text-white {% endif %}"
+                >Message Generator</a
+              >
+            </li>
+            <li>
+              <a
+                href="{% url 'email_data:email_list' %}"
+                class="{% if request.path == '/email-data/' %} text-orange-600 {% else %} text-white {% endif %}"
+                >Email Data</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="navbar-end gap-1">
+          {% if request.user.is_authenticated %}
+          <a
+            href="{% url 'authentication:register' %}"
+            class="btn bg-orange-500 hover:bg-orange-600 hover:text-orange-100 font-semibold text-white rounded-lg"
+            >Admin +</a
+          >
+          <a
+            href="{% url 'authentication:logout' %}"
+            class="btn bg-red-600 hover:bg-red-700 hover:text-red-100 text-white rounded-lg"
+            >Logout</a
+          >
+
+          {% else %}
+
+          <a
+            href="{% url 'authentication:login' %}"
+            class="btn bg-orange-500 hover:bg-orange-600 hover:text-orange-100 font-semibold rounded-lg text-white"
+            >Login</a
+          >
+          {% endif %}
+        </div>
+      </div>
     </header>
 
-    <main>
-        {% block content %}
-        {% endblock content %}
-    </main>
-</body>
+    <main>{% block content %} {% endblock content %}</main>
+  </body>
+  <footer class="bottom-0 w-full flex">
+    <div class="bg-gray-950 shadow-2xl w-screen h-full w-full">
+      <div class="border border-blue-200"></div>
+      <div class="ml-10 mt-5">
+        <span class="">
+          <img
+            width="200 rem"
+            src="https://storage.googleapis.com/algonetwork/logo%20v1%20white%404x.png"
+            class="text-black mt-8"
+            alt="logo"
+          />
+        </span>
 
+        <h1 class="text-white mt-10 font-semibold">
+          PT. Algonacci Sobat Nusantara
+        </h1>
+        <h6 class="text-white mt-3">A Palugada Company Based in Jakarta</h6>
+        <p class="text-white mt-3">
+          Jl. Letjen S. Parman No.28 Grogol Petamburan
+        </p>
+        <p class="text-white mt-1">
+          Jakarta Barat Daerah Khusus Ibukota Jakarta 11470
+        </p>
+
+        <h1 class="text-white mt-10 mb-10">
+          © Algo Network. All right reserved
+        </h1>
+      </div>
+    </div>
+  </footer>
 </html>
