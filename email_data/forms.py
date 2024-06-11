@@ -13,11 +13,9 @@ class EmailDataForm(forms.ModelForm):
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if self.instance.pk is None:
-            # Create operation: Ensure the email does not already exist
             if EmailData.objects.filter(email=email).exists():
                 raise forms.ValidationError('Email data with this Email already exists.')
         else:
-            # Update operation: Ensure the email does not clash with another record
             if EmailData.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
                 raise forms.ValidationError('Email data with this Email already exists.')
         return email

@@ -1,22 +1,18 @@
 {% extends 'base.html' %}
-
-
 {% block meta %}
 <title>Email Manager</title>
 {% endblock meta %}
 
 {% block content %}
-
 <div class="m-10 text-2xl font-semibold">
     Dashboard
 </div>
 <div class="m-10 bg-white shadow-md rounded flex">
     <div class="w-1/4 p-4 border-r">
-
         <button id="showSent"
-            class="w-full mt-10 text-gray-600 border px-4 py-2 rounded mb-2 text-left hover:border-animate text-sm sm:text-base md:text-lg lg:text-xl">Sent</button>
+            class="w-full mt-10 text-gray-600 border px-4 py-2 rounded mb-2 text-left hover:border-animate  text-sm md:text-base">Sent</button>
         <button id="showScheduled"
-            class="w-full text-gray-600 border px-4 py-2 rounded text-left hover:border-animate text-sm sm:text-base md:text-lg lg:text-xl">Scheduled</button>
+            class="w-full text-gray-600 border px-4 py-2 rounded text-left hover:border-animate  text-sm md:text-base">Scheduled</button>
     </div>
     <div class="w-3/4 p-4">
         <table id="emailTable" class="display m-20" style="width:100%">
@@ -33,12 +29,12 @@
         <div id="emailDetails" class="bg-gray-50 p-4 rounded shadow-sm hidden">
             <div class="flex justify-between">
                 <button id="backButton"
-                    class="border btn-sm md:btn-md btn btn-neutral rounded-lg text-white text-sm sm:text-base md:text-lg lg:text-xl">Back</button>
+                    class="border btn-xs md:btn-sm btn btn-neutral rounded-lg text-white text-sm md:text-base">Back</button>
                 <div>
                     <button id="editButton"
-                        class=" border btn-sm md:btn-md btn bg-orange-500 hover:bg-orange-600 hover:text-orange-100 rounded-lg text-white text-sm sm:text-base md:text-lg lg:text-xl">Edit</button>
+                        class=" border btn-xs md:btn-sm btn bg-orange-500 hover:bg-orange-600 hover:text-orange-100 rounded-lg text-white text-sm md:text-base">Edit</button>
                     <button onclick="showDeleteModal()" id="deleteButton"
-                        class=" border btn-sm md:btn-md btn bg-red-600 hover:bg-red-700 hover:text-red-100 rounded-lg text-white text-sm sm:text-base md:text-lg lg:text-xl">Delete</button>
+                        class=" border btn-xs md:btn-sm btn bg-red-600 hover:bg-red-700 hover:text-red-100 rounded-lg text-white  text-sm md:text-base">Delete</button>
                 </div>
             </div>
 
@@ -58,10 +54,9 @@
                 <form method="post" id="deleteForm">
                     {% csrf_token %}
                     <button type="submit"
-                        class="btn bg-red-600 hover:bg-red-700 hover:text-red-100 rounded-lg text-white text-sm sm:text-base md:text-lg lg:text-xl"
+                        class="btn bg-red-600 hover:bg-red-700 hover:text-red-100 rounded-lg text-white  text-sm md:text-base"
                         id="confirmDeleteButton">Confirm</button>
-                    <button type="button"
-                        class="btn btn-neutral rounded-lg text-white text-sm sm:text-base md:text-lg lg:text-xl"
+                    <button type="button" class="btn btn-neutral rounded-lg text-white  text-sm md:text-base"
                         onclick="closeDeleteModal()">Cancel</button>
                 </form>
             </div>
@@ -194,6 +189,10 @@
 
                         // Set the delete form action URL to include the email ID
                         $('#deleteForm').attr('action', `/emails/delete/${id}/`);
+
+                        $('#editButton').off('click').on('click', function () {
+                            window.location.href = `/edit-schedule-email/${id}/`;
+                        });
                     }
                 });
             }
@@ -229,11 +228,6 @@
             const deleteModal = document.getElementById('my_modal_1');
             deleteModal.close();
         }
-
-
-
-
-
     </script>
 </div>
 {% endblock content %}

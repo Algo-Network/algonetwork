@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 
-{% block content %}
+
 
 {% block meta %}
 <title>Generator Message</title>
 {% endblock meta %}
+
+{% block content %}
 
 <div class="m-10 text-2xl font-semibold">
     Message Generator
@@ -65,8 +67,8 @@
     <div class="md:col-span-2 flex relative bg-gray-100 rounded-xl">
         <div class="m-4 w-full">
             <span class="font-semibold">Message :</span>
-            <form enctype="multipart/form-data" class="mt-10">
-                <div class="row g-2 align-items-center">
+            <form enctype="multipart/form-data" class="mt-5">
+                <div class="row align-items-center">
                     {% csrf_token %}
                     {{ form.media }}
                     <div class="col">
@@ -149,11 +151,9 @@
 
     $('#send-email-btn').click(function (e) {
         e.preventDefault();
-
-        // Mengambil nilai dari masing-masing bidang formulir
         var department = $('#sendto').val();
         var subject = $('#subject').val();
-        var content = CKEDITOR.instances['id_content'].getData(); // Mengambil konten dari CKEditor
+        var content = CKEDITOR.instances['id_content'].getData();
         var scheduleTime = $('#id_schedule_time').val();
 
         console.log(department)
@@ -161,8 +161,6 @@
         console.log(content)
         console.log(scheduleTime)
 
-
-        // Membuat objek FormData untuk dikirimkan
         var formData = new FormData();
         formData.append('department', department);
         formData.append('subject', subject);

@@ -39,7 +39,6 @@ def register_user(request):
             messages.success(request, 'Registration successful')
             return render(request, 'register.html')
         else:
-            # Jika formulir tidak valid, tampilkan pesan kesalahan dan tampilkan kembali formulir
             for field, errors in form.errors.items():
                 for error in errors:
                     messages.error(request, f"{field}: {error}")
