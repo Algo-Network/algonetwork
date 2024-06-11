@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import login_user, logout_user, register_user, forgot_password
+from .views import login_user, logout_user, register_user
 from django.contrib.auth import views
 from django.urls import reverse_lazy
 
