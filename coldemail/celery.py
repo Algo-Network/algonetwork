@@ -7,6 +7,7 @@ from django.conf import settings
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'coldemail.settings')
 
 app = Celery('coldemail')
+
 app.conf.enable_utc = False
 
 app.conf.update(timezone = 'Asia/Jakarta')

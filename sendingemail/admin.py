@@ -5,6 +5,6 @@ from .forms import EmailScheduleForm
 @admin.register(EmailSchedule)
 class EmailScheduleAdmin(admin.ModelAdmin):
     form = EmailScheduleForm
-    list_display = ('department', 'subject', 'schedule_time', 'created_at', 'updated_at')
+    list_display = ('department', 'subject', 'schedule_time', 'status_sent', 'created_at', 'updated_at')
     search_fields = ('department', 'subject')
-    list_filter = ('department', 'schedule_time')
+    list_filter = ('department', 'schedule_time', 'status_sent')

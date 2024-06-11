@@ -11,8 +11,8 @@
 </div>
 <div class="m-10 grid grid-cols-1 md:grid-cols-3 gap-4">
     <!-- Form Section -->
-    <div class="md:col-span-1">
-        <form id="message-form" class="space-y-4 flex flex-col justify-center">
+    <div class="md:col-span-1 col-span-2">
+        <form id="message-form" class="space-y-4 flex flex-col justify-center w-full">
             {% csrf_token %}
             <div>
                 <label for="subject" class="block text-sm font-semibold text-gray-950">Subject</label>
@@ -183,7 +183,7 @@
             success: function (response) {
                 console.log(response);
                 if (response.success) {
-                    alert("Email scheduled/sent successfully!");
+                    alert(response.message);
                 } else {
                     alert("There was an error. Please try again.");
                 }

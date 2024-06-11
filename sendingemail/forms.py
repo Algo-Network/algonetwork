@@ -7,6 +7,5 @@ class EmailScheduleForm(forms.ModelForm):
         model = EmailSchedule
         fields = ['department', 'subject', 'content', 'schedule_time']
         widgets = {
-            'schedule_time': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'content': CKEditorWidget(),
         }

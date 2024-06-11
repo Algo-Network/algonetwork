@@ -1,16 +1,28 @@
-{% extends 'base.html' %}
-
-{% block content %}
-
-{% block meta %}
-<title>Edit Schedule Email</title>
-{% endblock meta %}
-
-{% block content %}
-<h1>Edit Email Schedule</h1>
-<form method="post">
+<form method="post" id="editScheduleForm">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Save changes</button>
+    <button type="submit"
+        class="btn bg-blue-500 hover:bg-blue-600 hover:text-blue-100 rounded-lg text-white">Save</button>
+    <button type="button" class="btn btn-neutral rounded-lg text-white" onclick="closeEditModal()">Cancel</button>
 </form>
-{% endblock content %}
+
+<script>
+    $(document).ready(function () {
+        $('#editScheduleForm').submit(function (event) {
+            event.preventDefault();
+            let formData = $(this).serialize();
+            $.ajax({
+                url: $(this).attr('action'),
+                method: 'POST',
+                data: formData,
+                success: function (response) {
+                    if (response.status === 'success') {
+                        window.location.reload(); // Reload the page on success
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            });
+        });
+    });
+</script>

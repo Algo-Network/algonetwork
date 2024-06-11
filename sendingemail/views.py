@@ -7,43 +7,46 @@ import pytz
 import json
 from django.conf import settings
 from .models import EmailSchedule
-from .tasks import send_department_emails_now
+from .tasks import send_department_emails_now, send_department_emails
 from .forms import EmailScheduleForm 
 
 def send_email_now(request, department, subject, content):
     print(content)
-    send_department_emails_now.delay(department, subject, content)
-    return JsonResponse({'success': True, 'message': 'Email scheduled successfully'})
+    send_department_emails_now.delay(department, subject, content, request.user.email)
+    return JsonResponse({'success': True, 'message': 'Email sent successfully'})
 
-def schedule_email_view(request):
+from django.utils import timezone
+
+def schedule_email_post(request):
     if request.method == 'POST':
         form = EmailScheduleForm(request.POST)
         
         department = request.POST.get('department')
         subject = request.POST.get('subject')
         content = request.POST.get('content')
-        schedule_time = request.POST.get('schedule_time')
-        print(schedule_time)
-        if not schedule_time:
+        schedule_time_str = request.POST.get('schedule_time')
+        print(schedule_time_str)
+        if not schedule_time_str:
             return send_email_now(request, department, subject, content)
         else:
-            email_schedule = EmailSchedule(
+            try:
+                schedule_time = timezone.datetime.fromisoformat(schedule_time_str)
+                schedule_time = timezone.make_aware(schedule_time, timezone=timezone.get_current_timezone())  # Make it timezone aware
+            except ValueError as e:
+                print(f"Error converting schedule_time_str: {e}")
+                return JsonResponse({'success': False, 'errors': 'Invalid datetime format'})
+            
+            # Save EmailSchedule
+            email_schedule = EmailSchedule.objects.create(
                 department=department,
                 subject=subject,
                 content=content,
-                schedule_time=schedule_time
+                schedule_time=schedule_time,
+                user=request.user
             )
-            email_schedule.save()
 
-            try:
-                print(f"Received schedule_time_str: {schedule_time}")
-                schedule_time = datetime.fromisoformat(schedule_time)      
-                schedule_time = timezone.make_aware(schedule_time, timezone=pytz.timezone(settings.TIME_ZONE))
-                print(f"Converted schedule_time: {schedule_time}")
-            except ValueError as e:
-                print(f"Error converting schedule_time_str: {e}")
-                return JsonResponse({'success': False, 'errors': 'Invalid datetime format'})             
 
+            # Save PeriodicTask
             day_of_week = schedule_time.weekday() + 1
             if day_of_week == 7:
                 day_of_week = 0
@@ -58,9 +61,10 @@ def schedule_email_view(request):
                 crontab=schedule,
                 name=f"Send email to {department} at {schedule_time}",
                 task='sendingemail.tasks.send_department_emails',
-                args=json.dumps([department, subject, content]),
-                expires=schedule_time + timezone.timedelta(minutes=1)
+                args=json.dumps([department, subject, content, str(email_schedule.id)]),
+                expires=schedule_time + timezone.timedelta(minutes=10)
             )
+            
             return JsonResponse({'success': True, 'message': 'Email scheduled successfully'})
     else:
         return JsonResponse({'success': False, 'errors': 'Invalid request method'})
