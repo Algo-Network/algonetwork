@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-viz$h!_1g(w^dcubx)%e@gzp2g9hpqdl-^8(f29upjx(8d$_(v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['34.101.214.96']
 
 TAILWIND_APP_NAME = 'theme'
 
@@ -114,10 +114,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'algonetwork',  # Nama database
-        'USER': 'postgres',  # Nama user
-        'PASSWORD': 'algonetwork',  # Password user
+        'USER': 'algonetwork',  # Nama user
+        'PASSWORD': 'algo123',  # Password user
         'HOST': 'localhost',  # Host database
-        'PORT': '5432',  # Port database
+        # Port database
     }
 }
 
