@@ -8,66 +8,61 @@
 
 
 
-<h1 class="text-2xl font-semibold m-10">Email List</h1>
+<div class="text-2xl font-semibold m-10">Email List</div>
 
-<div class="overflow-x-auto relative">
-    <div class="flex justify-between">
-        <div class="flex items-center">
-            <div id="pagination" class="flex items-center"></div>
+<table class="table" id="emailTable">
+    <thead class="bg-gray-950 text-white">
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Department</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for email in emails %}
+        <tr>
+            <th>{{ forloop.counter }}</th>
+            <td class="text-orange-600">{{ email.nama }} </td>
+            <td>{{ email.email }}</td>
+            <td>{{ email.group }}</td>
+            <td>
+                <a href="{% url 'email_data:email_update' email.email %}"
+                    class="btn btn-sm bg-orange-500 hover:bg-orange-600 hover:text-orange-100 rounded-lg text-white">Edit</a>
+                <button
+                    class="btn btn-sm bg-red-600 hover:bg-red-700 hover:text-red-100 rounded-lg text-white delete-link"
+                    onclick="showDeleteModal(event)">Delete</button>
+
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<dialog id="my_modal_1" class="modal">
+    <div class="modal-box">
+        <h3 class="font-bold text-lg">Confirm Deletion</h3>
+        <p class="py-4">Are you sure you want to delete <span id="deleteEmail"></span>?</p>
+        <div class="modal-action">
+            <form method="post" id="deleteForm">
+                {% csrf_token %}
+                <button class="btn bg-red-600 hover:bg-red-700 hover:text-red-100 rounded-lg text-white"
+                    id="confirmDeleteButton">Confirm</button>
+                <button class="btn btn-neutral rounded-lg text-white" onclick="my_modal_1.close()">Cancel</button>
+            </form>
         </div>
     </div>
+</dialog>
 
 
-    <table class="table" id="emailTable">
-        <thead class="bg-neutral-900 text-white">
-            <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Department</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for email in emails %}
-            <tr>
-                <th>{{ forloop.counter }}</th>
-                <td class="text-blue-700">{{ email.nama }} </td>
-                <td>{{ email.email }}</td>
-                <td>{{ email.group }}</td>
-                <td>
-                    <a href="{% url 'email_data:email_update' email.email %}"
-                        class="btn btn-sm btn-primary rounded-lg text-white">Edit</a>
-                    <button class="btn btn-sm btn-error rounded-lg text-white delete-link"
-                        onclick="showDeleteModal(event)">Delete</button>
-
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <dialog id="my_modal_1" class="modal">
-        <div class="modal-box">
-            <h3 class="font-bold text-lg">Confirm Deletion</h3>
-            <p class="py-4">Are you sure you want to delete <span id="deleteEmail"></span>?</p>
-            <div class="modal-action">
-                <form method="post" id="deleteForm">
-                    {% csrf_token %}
-                    <button class="btn btn-error rounded-lg text-white" id="confirmDeleteButton">Confirm</button>
-                    <button class="btn btn-neutral rounded-lg text-white" onclick="my_modal_1.close()">Cancel</button>
-                </form>
-            </div>
-        </div>
-    </dialog>
 
 
-</div>
+<a href="{% url 'email_data:email_create' %}" class="btn btn-base bg-orange-500 hover:bg-orange-600 hover:text-orange-100
+ ml-10 mb-20 text-white rounded-lg p-3">Add Data +</a>
 
-<a href="{% url 'email_data:email_create' %}" class="btn btn-primary ml-5 text-white rounded-lg p-3">Add new email</a>
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css">
-<script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+
 
 
 <script>
@@ -154,20 +149,11 @@
 
     }
 
-    /* Style untuk modal */
-    .modal {
-        z-index: 1;
-        /* Menempatkan modal di atas konten lain */
-    }
-
-    .modal-content {
-        width: 400px;
-        background-color: #fff;
-    }
-
-    .hidden {
-        display: none;
-        /* Menyembunyikan elemen */
+    .dt-search input[type="search"]:focus {
+        border-color: #DD6B20;
+        /* Warna fokus oranye */
+        outline: none;
+        box-shadow: 0 0 0 1px #DD6B20;
     }
 </style>
 {% endblock content %}

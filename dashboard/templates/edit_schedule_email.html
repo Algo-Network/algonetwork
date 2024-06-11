@@ -1,0 +1,28 @@
+<form method="post" id="editScheduleForm">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit"
+        class="btn bg-blue-500 hover:bg-blue-600 hover:text-blue-100 rounded-lg text-white">Save</button>
+    <button type="button" class="btn btn-neutral rounded-lg text-white" onclick="closeEditModal()">Cancel</button>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#editScheduleForm').submit(function (event) {
+            event.preventDefault();
+            let formData = $(this).serialize();
+            $.ajax({
+                url: $(this).attr('action'),
+                method: 'POST',
+                data: formData,
+                success: function (response) {
+                    if (response.status === 'success') {
+                        window.location.reload(); // Reload the page on success
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            });
+        });
+    });
+</script>

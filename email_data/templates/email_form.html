@@ -11,15 +11,17 @@
         <form method="post" class="space-y-4">
             {% csrf_token %}
             <div>
-                <label class="block text-sm font-medium text-gray-700" for="{{ form.nama.id_for_label }}">Name</label>
+                <label class="block text-sm font-semibold text-gray-950" for="{{ form.nama.id_for_label }}">Name</label>
                 <div class="mt-1">
                     <input type="text" name="{{ form.nama.html_name }}" id="{{ form.nama.id_for_label }}"
-                        value="{{ form.nama.value|default_if_none:'' }}" class="input input-bordered w-full" required>
+                        value="{{ form.nama.value|default_if_none:'' }}"
+                        class="input input-bordered w-full focus:border-orange-600 focus:ring-orange-600" required>
 
                 </div>
             </div>
             <div>
-                <label class="block text-sm font-medium text-gray-700" for="{{ form.email.id_for_label }}">Email</label>
+                <label class="block text-sm font-semibold text-gray-950"
+                    for="{{ form.email.id_for_label }}">Email</label>
                 <div class="mt-1">
                     <input type="email" name="{{ form.email.html_name }}" id="{{ form.email.id_for_label }}"
                         value="{{ form.email.value|default_if_none:'' }}" class="input input-bordered w-full" required>
@@ -27,7 +29,8 @@
                 </div>
             </div>
             <div>
-                <label class="block text-sm font-medium text-gray-700" for="{{ form.group.id_for_label }}">Group</label>
+                <label class="block text-sm font-semibold text-gray-950"
+                    for="{{ form.group.id_for_label }}">Group</label>
                 <div class="mt-1">
                     <select name="{{ form.group.html_name }}" id="{{ form.group.id_for_label }}"
                         class="input input-bordered w-full">
@@ -42,8 +45,10 @@
                 </div>
             </div>
             <div class="flex justify-end gap-2">
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Save</button>
-                <a href="{% url 'email_data:email_list' %}" class="btn btn-error text-white rounded-lg">Back</a>
+                <button type="submit"
+                    class="btn bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 hover:text-orange-100">Save</button>
+                <a href="{% url 'email_data:email_list' %}"
+                    class="btn bg-red-600 text-white hover:bg-red-700 hover:text-red-100 rounded-lg">Cancel</a>
             </div>
         </form>
     </div>

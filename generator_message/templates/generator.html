@@ -11,16 +11,16 @@
 </div>
 <div class="m-10 grid grid-cols-1 md:grid-cols-3 gap-4">
     <!-- Form Section -->
-    <div class="md:col-span-1">
-        <form id="message-form" class="space-y-4 flex flex-col justify-center">
+    <div class="md:col-span-1 col-span-2">
+        <form id="message-form" class="space-y-4 flex flex-col justify-center w-full">
             {% csrf_token %}
             <div>
-                <label for="subject" class="block text-sm font-semibold text-gray-700">Subject</label>
+                <label for="subject" class="block text-sm font-semibold text-gray-950">Subject</label>
                 <input type="text" name="subject" placeholder="" class="input input-bordered w-full max-w-xs"
                     id="subject">
             </div>
             <div>
-                <label for="sendto" class="block text-sm font-semibold text-gray-700">Send To</label>
+                <label for="sendto" class="block text-sm font-semibold text-gray-950">Send To</label>
                 <select class="select select-accent w-full max-w-xs" name="sendto" id="sendto">
                     <option disabled selected>To whom you send this email</option>
                     <option value="HR">Devisi HR</option>
@@ -31,7 +31,7 @@
                 </select>
             </div>
             <div>
-                <label for="mode" class="block text-sm font-semibold text-gray-700">Modes</label>
+                <label for="mode" class="block text-sm font-semibold text-gray-950">Modes</label>
                 <select class="select select-accent w-full max-w-xs" id="mode" name="mode">
                     <option disabled selected>Choose your mail's mode</option>
                     <option value="formal">Formal</option>
@@ -42,28 +42,27 @@
                 </select>
             </div>
             <div>
-                <label for="language" class="block text-sm font-semibold text-gray-700">Language</label>
+                <label for="language" class="block text-sm font-semibold text-gray-950">Language</label>
                 <select class="select select-accent w-full max-w-xs" id="language" name="language">
                     <option value="id">Bahasa Indonesia</option>
                     <option value="en">English</option>
                 </select>
             </div>
             <div>
-                <label for="email_detail" class="block text-sm font-semibold text-gray-700">Email's Detail</label>
+                <label for="email_detail" class="block text-sm font-semibold text-gray-950">Email's Detail</label>
                 <textarea type="text" class="textarea input-bordered w-full max-w-xs" placeholder="" id="email_detail"
                     name="email_detail" rows="5"></textarea>
             </div>
 
             <div>
-                <button type="button" class="btn btn-primary rounded-lg text-white" onclick="sendMessage()">Generate
+                <button type="button"
+                    class="btn bg-orange-500 hover:bg-orange-600 hover:text-orange-100 rounded-lg text-white"
+                    onclick="sendMessage()">Generate
                     Messages</button>
             </div>
         </form>
     </div>
-
-    <!-- Response Section -->
-    <div class="md:col-span-2 flex relative bg-slate-100 rounded-xl">
-
+    <div class="md:col-span-2 flex relative bg-gray-100 rounded-xl">
         <div class="m-4 w-full">
             <span class="font-semibold">Message :</span>
             <form enctype="multipart/form-data" class="mt-10">
@@ -74,7 +73,7 @@
                         {{ form.content }}
                     </div>
                     <div class="col-auto">
-                        <label for="schedule_time" class="block text-sm font-semibold text-gray-700 mt-3">Time
+                        <label for="schedule_time" class="block text-sm font-semibold text-gray-950 mt-3">Time
                             Sending</label>
                         <input type="datetime-local" name="{{ form.schedule_time.html_name }}"
                             id="{{ form.schedule_time.id_for_label }}" class="input input-bordered max-w-xs"
@@ -82,14 +81,15 @@
                     </div>
 
                     <div class="col-auto hidden">
-                        <label for="schedule_time" class="block text-sm font-semibold text-gray-700">Subject</label>
+                        <label for="schedule_time" class="block text-sm font-semibold text-gray-950">Subject</label>
                         <input type="text" name="{{ form.subject.html_name }}" id="{{ form.subject.id_for_label }}"
                             class="input input-bordered max-w-xs" value="{{ form.subject.value|default_if_none:'' }}"
                             required>
                     </div>
                 </div>
                 <div class="flex justify-end absolute bottom-0 right-0 m-5">
-                    <button type="submit" class="btn btn-primary btn-wide rounded-lg text-white"
+                    <button type="submit"
+                        class="btn bg-orange-500 hover:bg-orange-600 hover:text-orange-100 rounded-lg text-white"
                         id="send-email-btn">Send Email</button>
                 </div>
             </form>
@@ -138,7 +138,7 @@
                 const { value, done } = await reader.read();
                 if (done) break;
                 result += decoder.decode(value);
-                const cleanedResult = result
+                const cleanedResult = result.replace(/\n/g, '<br>');
                 const formattedResult = marked.parse(cleanedResult);
                 CKEDITOR.instances['id_content'].setData(formattedResult);
             }
@@ -183,7 +183,7 @@
             success: function (response) {
                 console.log(response);
                 if (response.success) {
-                    alert("Email scheduled/sent successfully!");
+                    alert(response.message);
                 } else {
                     alert("There was an error. Please try again.");
                 }
