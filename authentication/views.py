@@ -27,7 +27,7 @@ def login_user(request):
         else:
             messages.error(request, 'The email or password is incorrect!')
     context = {}
-    return render(request, 'login.html', context)
+    return render(request, 'Login.html', context)
 
 
 @user_passes_test(lambda u: u.is_superuser, login_url='/auth/login/')
