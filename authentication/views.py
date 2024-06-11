@@ -37,12 +37,12 @@ def register_user(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Registration successful')
-            return render(request, 'register.html')
+            return render(request, 'Register.html')
         else:
             for field, errors in form.errors.items():
                 for error in errors:
                     messages.error(request, f"{field}: {error}")
-            return render(request, 'register.html', {'form': form})
+            return render(request, 'Register.html', {'form': form})
     else:
         form = CustomUserCreationForm()
     return render(request, 'Register.html', {'form': form})
