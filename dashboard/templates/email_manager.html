@@ -124,6 +124,7 @@
         }
     </style>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function () {
             let emailTable = $('#emailTable').DataTable({
@@ -168,8 +169,6 @@
                 fetchEmailDetails(data.id);
             });
 
-
-
             function fetchEmailDetails(id) {
                 $('#emailTable_wrapper').addClass('hidden');
                 $.ajax({
@@ -207,13 +206,30 @@
                     success: function (response) {
                         if (response.status === 'success') {
                             closeDeleteModal();
-                            window.location.reload();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: 'The email has been deleted successfully.',
+                                confirmButtonColor: '#DD6B20'
+                            }).then(() => {
+                                window.location.reload();
+                            });
                         } else {
-                            alert(response.message);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: response.message,
+                                confirmButtonColor: '#d33'
+                            });
                         }
                     },
                     error: function () {
-                        alert('An error occurred while deleting the email.');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'An error occurred while deleting the email. Please try again.',
+                            confirmButtonColor: '#d33'
+                        });
                     }
                 });
             });

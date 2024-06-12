@@ -3,13 +3,27 @@
 {% block content %}
 <div class="flex flex-col items-center justify-center m-10">
     {% if messages %}
-    {% for message in messages %}
-    {% if message.tags == 'error' %}
-    <p style="color: red;">{{ message }}</p>
-    {% elif message.tags == 'success' %}
-    <p style="color: green;">{{ message }}</p>
-    {% endif %}
-    {% endfor %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            {% for message in messages %}
+            {% if message.tags == 'error' %}
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '{{ message }}',
+                confirmButtonColor: '#d33',
+            });
+            {% elif message.tags == 'success' %}
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: '{{ message }}',
+                confirmButtonColor: '#DD6B20',
+            });
+            {% endif %}
+            {% endfor %}
+        });
+    </script>
     {% endif %}
     <div class="w-full p-6 bg-white border-t-4 border-black rounded-md shadow-md border-top max-w-lg">
         <h1 class="text-3xl font-semibold text-center text-gray-950">

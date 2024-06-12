@@ -52,6 +52,7 @@
             onclick="closeEditModal()">Cancel</button>
     </form>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function () {
         $('#editScheduleForm').submit(function (event) {
@@ -65,11 +66,31 @@
                 method: 'POST',
                 data: formData,
                 success: function (response) {
-                    if (response.status === 'success') {
-                        window.location.reload();
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Saved!',
+                            text: 'The message has been successfully saved.',
+                            confirmButtonColor: '#DD6B20'
+                        }).then(() => {
+                            window.location.reload();
+                        });
                     } else {
-                        alert(response.message);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: response.message,
+                            confirmButtonColor: '#d33'
+                        });
                     }
+                },
+                error: function (xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'An error occurred while saving the message. Please try again.',
+                        confirmButtonColor: '#d33'
+                    });
                 }
             });
         });
