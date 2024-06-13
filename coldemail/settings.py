@@ -107,18 +107,8 @@ WSGI_APPLICATION = 'coldemail.wsgi.application'
 
 
 
-import os
 
-DATABASES = {
-    'default': {
-        'ENGINE': os.getenv('DATABASE_ENGINE'),
-        'HOST': os.getenv('DATABASE_HOST'),
-        'USER': os.getenv('DATABASE_USER'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'NAME': os.getenv('DATABASE_NAME'),
-        'PORT': os.getenv('DATABASE_PORT'),
-    }
-}
+
 
 
 # DATABASES = {
@@ -182,6 +172,19 @@ from dotenv import load_dotenv
 
 # Muat file .env
 load_dotenv()
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': os.getenv('DATABASE_ENGINE'),
+        'HOST': os.getenv('DATABASE_HOST'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'NAME': os.getenv('DATABASE_NAME'),
+        'PORT': os.getenv('DATABASE_PORT'),
+    }
+}
+
 
 # Baca kunci OpenAI dari .env
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
