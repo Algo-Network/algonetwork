@@ -33,6 +33,7 @@ python manage.py runserver
 cd .\env\Scripts\
 .\activate
 cd ..\..
+
 celery -A coldemail worker --pool=solo -l info # untuk running worker
 
 celery -A coldemail beat -l info # untuk logging check celery
