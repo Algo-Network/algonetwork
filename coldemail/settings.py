@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-viz$h!_1g(w^dcubx)%e@gzp2g9hpqdl-^8(f29upjx(8d$_(v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['34.101.214.96']
+ALLOWED_HOSTS = ['34.101.214.96', '127.0.0.1']
 
 TAILWIND_APP_NAME = 'theme'
 
@@ -109,17 +109,28 @@ WSGI_APPLICATION = 'coldemail.wsgi.application'
 
 import os
 
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'algonetwork',  # Nama database
-        'USER': 'algonetwork',  # Nama user
-        'PASSWORD': 'algo123',  # Password user
-        'HOST': 'localhost',  # Host database
-        # Port database
+        'ENGINE': os.getenv('DATABASE_ENGINE'),
+        'HOST': os.getenv('DATABASE_HOST'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'NAME': os.getenv('DATABASE_NAME'),
+        'PORT': os.getenv('DATABASE_PORT'),
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'algonetwork',  # Nama database
+#         'USER': 'postgres',  # Nama user
+#         'PASSWORD': 'algonetwork',  # Password user
+#         'HOST': 'localhost',  # Host database
+#         'PORT': '5432',  # Port database
+#     }
+# }
 
 
 # Password validation
@@ -204,13 +215,13 @@ CACHES = {
 
 
 # SMTP Settings
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_USE_TLS = True
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_HOST_USER ='algonetworkofficial@gmail.com'
-EMAIL_HOST_PASSWORD = "zqgustonluwvrdqa"
-DEFAULT_FROM_EMAIL = 'algonetworkofficial@gmail.com'
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS") == "True"
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT"))
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
 
 
 # zqgu ston luwv rdqa

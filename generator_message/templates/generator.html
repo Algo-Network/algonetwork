@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
 
-
-
 {% block meta %}
 <title>Generator Message</title>
 {% endblock meta %}
@@ -181,15 +179,30 @@
             success: function (response) {
                 console.log(response);
                 if (response.success) {
-                    alert(response.message);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: response.message,
+                        confirmButtonColor: '#DD6B20'
+                    });
                 } else {
-                    alert("There was an error. Please try again.");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: "There was an error. Please try again.",
+                        confirmButtonColor: '#d33'
+                    });
                 }
 
             },
             error: function (xhr, errmsg, err) {
                 console.log(xhr.status + ": " + xhr.responseText);
-                alert("There was an error. Please try again.");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: "There was an error. Please try again.",
+                    confirmButtonColor: '#d33'
+                });
             }
         });
     });
