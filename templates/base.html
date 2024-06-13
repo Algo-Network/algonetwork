@@ -20,6 +20,26 @@
             border-radius: 0.25rem;
             border: 1px solid #ccc;
         }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1 0 auto;
+        }
+
+        footer {
+            flex-shrink: 0;
+        }
     </style>
     {% tailwind_css %} {% block meta %}
     <title>{% block title %}{% endblock title %}</title>
@@ -27,7 +47,7 @@
 
 </head>
 
-<body class="p-0 m-0 box-borderbg-gray-50">
+<body class="p-0 m-0 box-border bg-gray-50">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <header>
         <div class="navbar bg-gradient-to-b from-gray-950 to-gray-800 shadow-2xl">
@@ -97,40 +117,38 @@
     </header>
 
     <main>{% block content %} {% endblock content %}</main>
-</body>
 
-<footer class="bottom-0 w-full flex justify-center">
-    <div class="bg-gradient-to-b from-gray-800 to-gray-950 shadow-2xl w-full">
-        <div class="border border-blue-200"></div>
-        <div class="flex flex-col items-center">
-            <div class="flex flex-col md:flex-row justify-center gap-10 items-center my-10">
-                <span class="flex flex-col items-center md:items-start">
-                    <img width="200 rem" src="https://storage.googleapis.com/algonetwork/logo%20v1%20white%404x.png"
-                        class="text-black" alt="logo" />
-                    <h1 class="text-white font-semibold text-center md:text-left mt-4 md:mt-0 md:ml-14">
-                        PT. Algonacci Sobat Nusantara
-                    </h1>
-                </span>
+    <footer class="bottom-0 w-full flex justify-center">
+        <div class="bg-gradient-to-b from-gray-800 to-gray-950 shadow-2xl w-full">
+            <div class="border border-blue-200"></div>
+            <div class="flex flex-col items-center">
+                <div class="flex flex-col md:flex-row justify-center gap-10 items-center my-10">
+                    <span class="flex flex-col items-center md:items-start">
+                        <img width="200 rem" src="https://storage.googleapis.com/algonetwork/logo%20v1%20white%404x.png"
+                            class="text-black" alt="logo" />
+                        <h1 class="text-white font-semibold text-center md:text-left mt-4 md:mt-0 md:ml-14">
+                            PT. Algonacci Sobat Nusantara
+                        </h1>
+                    </span>
 
-                <div class="flex flex-col items-center md:items-start mt-10 md:mt-0 md:ml-40">
-                    <h6 class="text-white text-center md:text-left">A Palugada Company Based in Jakarta</h6>
-                    <p class="text-white mt-1 text-center md:text-left">
-                        Jl. Letjen S. Parman No.28 Grogol Petamburan
-                    </p>
-                    <p class="text-white mt-1 text-center md:text-left">
-                        Jakarta Barat Daerah Khusus Ibukota Jakarta 11470
-                    </p>
+                    <div class="flex flex-col items-center md:items-start mt-10 md:mt-0 md:ml-40">
+                        <h6 class="text-white text-center md:text-left">A Palugada Company Based in Jakarta</h6>
+                        <p class="text-white mt-1 text-center md:text-left">
+                            Jl. Letjen S. Parman No.28 Grogol Petamburan
+                        </p>
+                        <p class="text-white mt-1 text-center md:text-left">
+                            Jakarta Barat Daerah Khusus Ibukota Jakarta 11470
+                        </p>
+                    </div>
                 </div>
+
+                <h1 class="text-white my-5 text-center">
+                    <span class="text-blue-500">©</span> Algo Network <span class="text-orange-500">2024</span> - <span
+                        class="text-green-500">Crafted with C241-CE02 ❤️</span>
+                </h1>
             </div>
-
-            <h1 class="text-white my-5 text-center">
-                <span class="text-blue-500">©</span> Algo Network <span class="text-orange-500">2024</span> - <span
-                    class="text-green-500">Crafted with C241-CE02 ❤️</span>
-            </h1>
         </div>
-    </div>
-</footer>
-
-
+    </footer>
+</body>
 
 </html>

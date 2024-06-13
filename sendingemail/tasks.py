@@ -13,10 +13,11 @@ from authentication.models import CustomUser
 @shared_task(bind=True)
 def send_department_emails_now(self, department, subject, content, user_email):
     recipients = EmailData.objects.filter(group=department)
-    html_message = render_to_string('email_template.html', {'department': department, 'content': content})
+
     from_email = settings.EMAIL_HOST_USER
 
     for recipient in recipients:
+        html_message = render_to_string('email_template.html', {'department': department, 'content': content, 'name': recipient.nama})
         send_mail(
             subject,
             '',
