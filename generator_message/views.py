@@ -58,6 +58,7 @@ def send_to_openai(user_input):
         ],
         stream=True
     )
+
     return response
 
 @staff_member_required(login_url='/auth/login/')
