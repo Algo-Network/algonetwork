@@ -2945,10 +2945,6 @@ details.collapse summary::-webkit-details-marker{
   right: 0px;
 }
 
-.left-0{
-  left: 0px;
-}
-
 .col-auto{
   grid-column: auto;
 }
@@ -3073,14 +3069,6 @@ details.collapse summary::-webkit-details-marker{
   height: 100vh;
 }
 
-.h-full{
-  height: 100%;
-}
-
-.h-20{
-  height: 5rem;
-}
-
 .w-1\/2{
   width: 50%;
 }
@@ -3161,10 +3149,6 @@ details.collapse summary::-webkit-details-marker{
 
 .justify-between{
   justify-content: space-between;
-}
-
-.justify-evenly{
-  justify-content: space-evenly;
 }
 
 .gap-1{

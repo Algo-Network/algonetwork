@@ -48,8 +48,7 @@ def send_to_openai(user_input):
     Keterangan tambahan:
     1. Gunakan bulletpoints jika diperlukan.
     2. Berikan bahasa yang concise, namun tetap memberikan pesan yang kuat
-    3. Pada greetings awal, berikan kode {{{{ nama }}}} untuk menyebut nama receiver.
-    4. Berikan keterangan Algo's Network sebagai sender di bagian bawah email
+    3. Berikan keterangan Algo's Network sebagai sender di bagian bawah email
     """
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
