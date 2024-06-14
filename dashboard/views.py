@@ -87,7 +87,7 @@ def edit_schedule_email_view(request, pk):
             new_task_name = f"Send email to {email_schedule.department} at {format_schedule_time(schedule_time)}"
             periodic_task.name = new_task_name
             periodic_task.crontab = schedule
-            periodic_task.args = json.dumps([email_schedule.department, email_schedule.subject, email_schedule.content])
+            periodic_task.args = json.dumps([email_schedule.department, email_schedule.subject, email_schedule.content, str(email_schedule.id)])
             periodic_task.expires = schedule_time + timezone.timedelta(minutes=10)
             periodic_task.save()
 

@@ -101,9 +101,11 @@
             </div>
             <div class="navbar-end gap-1">
                 {% if request.user.is_authenticated %}
+                {% if request.user.is_superuser %}
                 <a href="{% url 'authentication:register' %}"
                     class="btn bg-orange-500 hover:bg-orange-600 hover:text-orange-100 font-semibold text-white rounded-lg">Admin
                     +</a>
+                {% endif %}
                 <a href="{% url 'authentication:logout' %}"
                     class="btn bg-red-600 hover:bg-red-700 hover:text-red-100 text-white rounded-lg">Logout</a>
 
