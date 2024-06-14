@@ -88,7 +88,7 @@ def edit_schedule_email_view(request, pk):
             periodic_task.name = new_task_name
             periodic_task.crontab = schedule
             periodic_task.args = json.dumps([email_schedule.department, email_schedule.subject, email_schedule.content])
-            periodic_task.expires = schedule_time + timezone.timedelta(minutes=1)
+            periodic_task.expires = schedule_time + timezone.timedelta(minutes=10)
             periodic_task.save()
 
             return JsonResponse({'success': True, 'message': 'Email schedule updated successfully'})
